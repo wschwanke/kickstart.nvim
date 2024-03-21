@@ -27,6 +27,15 @@ require 'lazy_init'
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+
+  {
+    'folke/zen-mode.nvim',
+    opts = {
+      window = {
+        backdrop = 0.9,
+      },
+    },
+  },
   {
     'prettier/vim-prettier',
     build = 'yarn install --frozen-lockfile --production',
@@ -160,7 +169,11 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          find_files = {
+            hidden = true,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -343,49 +356,37 @@ require('lazy').setup({
   require 'colorscheme',
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-
-  { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
-
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
-
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
-
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-    end,
-  },
-
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    dependencies = {
+      {
+        'windwp/nvim-ts-autotag',
+        opts = {},
+      },
+      {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        opts = {
+          custom_calculation = function(_, language_tree)
+            if vim.bo.filetype == 'blade' and language_tree._lang ~= 'javascript' and language_tree._lang ~= 'php' then
+              return '{{-- %s --}}'
+            end
+          end,
+        },
+      },
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
     opts = {
+      autotag = {
+        enable = true,
+        enable_rename = true,
+        enable_close = true,
+      },
+      filesystem = {
+        filtered_items = {
+          visible = true,
+        },
+      },
       ensure_installed = {
         'bash',
         'c',
@@ -405,6 +406,7 @@ require('lazy').setup({
         'regex',
         'yaml',
         'sql',
+        'php',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -419,9 +421,21 @@ require('lazy').setup({
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
+      ---@class ParserInfo[]
+      local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+      parser_configs.blade =
+        {
+          install_info = {
+            url = 'https://github.com/EmranMR/tree-sitter-blade',
+            files = { 'src/parser.c' },
+            branch = 'main',
+            generate_requires_npm = false,
+            requires_generate_from_grammar = true,
+          },
+          filetype = 'blade',
+        },
+        ---@diagnostic disable-next-line: missing-fields
+        require('nvim-treesitter.configs').setup(opts)
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
