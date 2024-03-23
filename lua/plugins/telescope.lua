@@ -39,19 +39,19 @@ return {
     vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
     vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
     ]]
-    vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-    vim.keymap.set('n', '<leader>fg', builtin.git_files, {})
-    vim.keymap.set('n', '<leader>fcw', function()
+    vim.keymap.set('n', '<leader>sf', builtin.find_files, {})
+    vim.keymap.set('n', '<leader>sg', builtin.git_files, {})
+    vim.keymap.set('n', '<leader>scw', function()
       local word = vim.fn.expand '<cword>'
       builtin.grep_string { search = word }
     end)
-    vim.keymap.set('n', '<leader>fcW', function()
+    vim.keymap.set('n', '<leader>scW', function()
       local word = vim.fn.expand '<cWORD>'
       builtin.grep_string { search = word }
     end)
-    vim.keymap.set('n', '<leader>fw', function()
+    vim.keymap.set('n', '<leader>sw', function()
       builtin.grep_string { search = vim.fn.input 'Grep > ' }
     end)
-    vim.keymap.set('n', '<leader>fht', builtin.help_tags, {})
+    vim.keymap.set('n', '<leader>sht', builtin.help_tags, {})
   end,
 }

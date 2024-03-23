@@ -23,18 +23,12 @@ vim.opt.showmode = false
 -- Enable break indent
 vim.opt.breakindent = true
 
--- Save undo history
-vim.opt.undofile = true
-
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
-
--- Decrease update time
-vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
@@ -62,3 +56,28 @@ vim.opt.scrolloff = 10
 vim.opt.colorcolumn = '100'
 
 vim.opt.wrap = false
+
+vim.opt.guicursor = ''
+
+vim.opt.nu = true
+vim.opt.relativenumber = true
+
+vim.opt.smartindent = true
+
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
+vim.opt.undofile = true
+
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+
+vim.opt.termguicolors = true
+
+vim.opt.isfname:append '@-@'
+
+vim.opt.updatetime = 50
+
+vim.g.netrw_browse_split = 0
+vim.g.netrw_banner = 0
+vim.g.netrw_winsize = 25
