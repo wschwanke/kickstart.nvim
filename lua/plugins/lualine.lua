@@ -3,7 +3,7 @@ return {
   config = function()
     local colors = {
       red = '#ca1243',
-      grey = '#a0a1a7',
+      grey = '#6C6C6C',
       black = '#383a42',
       white = '#f3f3f3',
       light_green = '#83a598',
