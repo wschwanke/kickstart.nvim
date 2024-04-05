@@ -2,6 +2,7 @@ return {
   'prettier/vim-prettier',
   build = 'yarn install --frozen-lockfile --production',
   branch = 'master',
+  ft = { 'javascript', 'typescript', 'css', 'scss', 'typescriptreact', 'javascriptreact', 'json' },
   config = function()
     -- Create or clear an autocommand group for prettier
     local prettier_group = vim.api.nvim_create_augroup('Prettier', { clear = true })
