@@ -1,5 +1,5 @@
 return {
-  'github/copilot.vim',
+  -- 'github/copilot.vim',
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   { 'numToStr/Comment.nvim', opts = {}, lazy = false },
   { -- Useful plugin to show you pending keybinds.

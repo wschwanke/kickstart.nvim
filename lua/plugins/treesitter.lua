@@ -1,18 +1,7 @@
-return { -- Highlight, edit, and navigate code
+return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
-  dependencies = {
-    {
-      'windwp/nvim-ts-autotag',
-      opts = {},
-    },
-  },
   opts = {
-    autotag = {
-      enable = true,
-      enable_rename = true,
-      enable_close = true,
-    },
     filesystem = {
       filtered_items = {
         visible = true,
@@ -20,12 +9,9 @@ return { -- Highlight, edit, and navigate code
     },
     ensure_installed = {
       'bash',
-      'c',
       'html',
       'lua',
       'markdown',
-      'vim',
-      'vimdoc',
       'javascript',
       'typescript',
       'css',
@@ -39,7 +25,6 @@ return { -- Highlight, edit, and navigate code
       'sql',
       'php',
     },
-    -- Autoinstall languages that are not installed
     auto_install = true,
     highlight = {
       enable = true,
@@ -51,7 +36,7 @@ return { -- Highlight, edit, and navigate code
   },
   config = function(_, opts)
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-    ---@diagnostic disable-next-line: missing-fields
+    -- @diagnostic disable-next-line: missing-fields
     require('nvim-treesitter.configs').setup(opts)
 
     -- There are additional nvim-treesitter modules that you can use to interact

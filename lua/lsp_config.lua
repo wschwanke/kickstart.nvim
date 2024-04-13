@@ -23,14 +23,14 @@ return {
     require('mason').setup()
     require('mason-lspconfig').setup {
       ensure_installed = {
-        -- 'gopls',
+        'lua_ls',
+        'gopls',
         'htmx',
         'jsonls',
         'tailwindcss',
         'eslint',
         'emmet_ls',
-        'lua_ls',
-        -- 'rust_analyzer',
+        'rust_analyzer',
         'tsserver',
       },
       handlers = {
