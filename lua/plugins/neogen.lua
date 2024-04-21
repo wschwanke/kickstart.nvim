@@ -13,12 +13,11 @@ return {
 
     vim.keymap.set('n', '<leader>nf', function()
       neogen.generate { type = 'func' }
-    end)
+    end, { desc = '[N]eogen [F]unction' })
 
     vim.keymap.set('n', '<leader>nt', function()
       neogen.generate { type = 'type' }
     end)
   end,
-  -- Uncomment next line if you want to follow only stable versions
   version = '*',
 }
