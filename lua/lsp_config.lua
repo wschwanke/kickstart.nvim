@@ -48,6 +48,8 @@ return {
               tailwindCSS = {
                 experimental = {
                   classRegex = {
+                    'class:\\s*?["\'`]([^"\'`]*).*?,',
+                    'clsx\\(([^)]*)\\)',
                     'cva\\(([^)]*)\\)',
                     'cn\\(([^)]*)\\)',
                     '(class|className)=["\'`]([^"\'`]*).*?["\'`]',
