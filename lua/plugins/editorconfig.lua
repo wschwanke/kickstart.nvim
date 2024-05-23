@@ -4,3 +4,4 @@ return {
     vim.g.EditorConfig_exclude_patterns = { 'fugitive://.*' }
   end,
 }
+

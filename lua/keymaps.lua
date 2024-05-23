@@ -40,7 +40,20 @@ vim.keymap.set('n', '<leader>Y', [["+Y]])
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
 
+local function includes(array, value)
+  for _, val in ipairs(array) do
+    if val == value then
+      return true
+    end
+  end
+end
+
 vim.keymap.set('n', '<leader>f', function()
-  vim.lsp.buf.format()
-  vim.cmd 'PrettierFragment'
+  local prettier = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' }
+
+  if includes(prettier, vim.bo.filetype) then
+    vim.cmd 'PrettierFragment'
+  else
+    vim.lsp.buf.format()
+  end
 end)

@@ -4,10 +4,11 @@ return {
   -- change the command in the config to whatever the name of that colorscheme is
   --
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
-  'projekt0n/github-nvim-theme',
+  'nyoom-engineering/oxocarbon.nvim',
   lazy = false,
   priority = 1000, -- make sure to load this before all the other start plugins
   config = function()
-    vim.cmd 'colorscheme github_dark_default'
+    vim.opt.background = 'dark'
+    vim.cmd 'colorscheme oxocarbon'
   end,
 }

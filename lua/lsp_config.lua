@@ -17,7 +17,8 @@ return {
   config = function()
     local cmp = require 'cmp'
     local cmp_lsp = require 'cmp_nvim_lsp'
-    local capabilities = vim.tbl_deep_extend('force', {}, vim.lsp.protocol.make_client_capabilities(), cmp_lsp.default_capabilities())
+    local capabilities = vim.tbl_deep_extend('force', {}, vim.lsp.protocol.make_client_capabilities(),
+      cmp_lsp.default_capabilities())
     local lspconfig = require 'lspconfig'
 
     require('fidget').setup {}
@@ -33,6 +34,7 @@ return {
         'emmet_ls',
         'rust_analyzer',
         'tsserver',
+        'csharp_ls',
       },
       handlers = {
         function(server_name) -- default handler (optional)
@@ -91,12 +93,18 @@ return {
       },
       sources = cmp.config.sources({
         { name = 'nvim_lsp' },
+        { name = 'buffer' },
         { name = 'luasnip' }, -- For luasnip users.
       }, {
         { name = 'path' },
-        { name = 'buffer' },
       }),
     }
+
+    local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+    cmp.event:on(
+      'confirm_done',
+      cmp_autopairs.on_confirm_done()
+    )
 
     vim.diagnostic.config {
       -- update_in_insert = true,
