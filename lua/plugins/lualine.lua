@@ -11,18 +11,6 @@ return {
       green = '#8ec07c',
     }
 
-    local theme = {
-      normal = {
-        a = { fg = colors.white, bg = colors.black },
-        b = { fg = colors.white, bg = colors.grey },
-        c = { fg = colors.black, bg = colors.white },
-        z = { fg = colors.white, bg = colors.black },
-      },
-      insert = { a = { fg = colors.black, bg = colors.light_green } },
-      visual = { a = { fg = colors.black, bg = colors.orange } },
-      replace = { a = { fg = colors.black, bg = colors.green } },
-    }
-
     local empty = require('lualine.component'):extend()
     function empty:draw(default_highlight)
       self.status = ''
@@ -73,7 +61,7 @@ return {
 
     require('lualine').setup {
       options = {
-        theme = theme,
+        theme = 'gruvbox-material',
         component_separators = '',
         section_separators = { left = '', right = '' },
       },
@@ -86,16 +74,13 @@ return {
             'diagnostics',
             source = { 'nvim' },
             sections = { 'error' },
-            diagnostics_color = { error = { bg = colors.red, fg = colors.white } },
           },
           {
             'diagnostics',
             source = { 'nvim' },
             sections = { 'warn' },
-            diagnostics_color = { warn = { bg = colors.orange, fg = colors.white } },
           },
           { 'filename', file_status = false, path = 1 },
-          { modified, color = { bg = colors.red } },
           {
             '%w',
             cond = function()
