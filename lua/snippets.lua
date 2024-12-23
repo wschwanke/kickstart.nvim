@@ -1,4 +1,4 @@
-local ls = require('luasnip')
+local ls = require 'luasnip'
 -- some shorthands...
 local s = ls.snippet
 -- local sn = ls.snippet_node
@@ -22,29 +22,29 @@ local t = ls.text_node
 
 local function external_dependencies_jsts()
   return s('edc', {
-    t({ '/**', ' * External dependencies', ' */', '' }),
+    t { '/**', ' * External dependencies', ' */', '' },
   })
 end
 
 local function internal_dependencies_jsts()
   return s('idc', {
-    t({ '/**', ' * Internal dependencies', ' */', '' }),
+    t { '/**', ' * Internal dependencies', ' */', '' },
   })
 end
 
-ls.add_snippets("javascript", {
+ls.add_snippets('javascript', {
   external_dependencies_jsts(),
   internal_dependencies_jsts(),
 })
-ls.add_snippets("javascriptreact", {
+ls.add_snippets('javascriptreact', {
   external_dependencies_jsts(),
   internal_dependencies_jsts(),
 })
-ls.add_snippets("typescript", {
+ls.add_snippets('typescript', {
   external_dependencies_jsts(),
   internal_dependencies_jsts(),
 })
-ls.add_snippets("typescriptreact", {
+ls.add_snippets('typescriptreact', {
   external_dependencies_jsts(),
   internal_dependencies_jsts(),
 })
