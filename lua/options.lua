@@ -1,3 +1,5 @@
+vim.lsp.set_log_level("debug")
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -26,7 +28,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = "yes"
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
@@ -40,19 +42,19 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
+vim.opt.inccommand = "split"
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 8
 
-vim.opt.colorcolumn = '100'
+vim.opt.colorcolumn = "100"
 
 vim.opt.wrap = false
 
-vim.opt.guicursor = ''
+vim.opt.guicursor = ""
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -63,7 +65,7 @@ vim.opt.smarttab = true
 
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 
 vim.opt.hlsearch = false
@@ -71,7 +73,7 @@ vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
 
-vim.opt.isfname:append '@-@'
+vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
@@ -83,3 +85,4 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
+vim.opt.mouse = ""

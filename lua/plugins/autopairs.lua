@@ -1,8 +1,8 @@
 return {
-  'windwp/nvim-autopairs',
-  event = 'InsertEnter',
-  config = true,
-  opts = {
-    disable_in_visualblock = true
-  }
+  'echasnovski/mini.pairs',
+  version = false,
+
+  config  = function ()
+   require('mini.pairs').setup();
+  end
 }
