@@ -1,0 +1,23 @@
+{
+  "name": "personal-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "langauge": "typescript",
+        "path": "./javascript.json"
+      },
+      {
+        "langauge": "typescriptreact",
+        "path": "./javascript.json"
+      },
+      {
+        "langauge": "javascript",
+        "path": "./javascript.json"
+      },
+      {
+        "langauge": "javascriptreact",
+        "path": "./javascript.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "External dependencies": {
+    "prefix": "edc",
+    "body": [
+      "/**",
+      " * External dependencies",
+      " */"
+    ]
+  },
+  "Internal dependencies": {
+    "prefix": "idc",
+    "body": [
+      "/**",
+      " * Internal dependencies",
+      " */"
+    ]
+  }
+}
