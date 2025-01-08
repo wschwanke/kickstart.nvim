@@ -29,8 +29,6 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 
-vim.cmd 'nmap <Leader>z <Plug>(Prettier)'
-
 -- greatest remap ever
 vim.keymap.set('x', '<leader>p', [["_dP]])
 
@@ -40,20 +38,3 @@ vim.keymap.set('n', '<leader>Y', [["+Y]])
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
 
-local function includes(array, value)
-  for _, val in ipairs(array) do
-    if val == value then
-      return true
-    end
-  end
-end
-
-vim.keymap.set('n', '<leader>f', function()
-  local prettier = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' }
-
-  if includes(prettier, vim.bo.filetype) then
-    vim.cmd 'PrettierFragment'
-  else
-    vim.lsp.buf.format()
-  end
-end)

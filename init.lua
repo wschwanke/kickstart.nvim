@@ -23,4 +23,3 @@ require 'snippets'
 require 'keymaps'
 
 require 'autocmds'
-

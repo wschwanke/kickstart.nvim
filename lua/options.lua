@@ -1,5 +1,4 @@
-vim.lsp.set_log_level("debug")
-
+vim.lsp.set_log_level("warn")
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!

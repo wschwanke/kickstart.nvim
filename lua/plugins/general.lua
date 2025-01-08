@@ -1,7 +1,9 @@
 return {
   -- 'github/copilot.vim',
-  'tpope/vim-sleuth',   -- Detect tabstop and shiftwidth automatically
-  { 'numToStr/Comment.nvim',    opts = {},          lazy = false },
+  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  { 'numToStr/Comment.nvim',  opts = {},    lazy = false },
+  { 'echasnovski/mini.icons', version = '*' },
+  { 'echasnovski/mini.icons', version = '*' },
   {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
