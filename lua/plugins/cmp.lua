@@ -7,12 +7,15 @@ return {
       'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-emoji',
+      'onsails/lspkind.nvim',
     },
     config = function()
       local cmp = require 'cmp'
+      local lspkind = require 'lspkind'
 
       cmp.setup {
-        snippet = {},
+        format = lspkind.cmp_format {},
         completion = { completeopt = 'menu,menuone,noinsert' },
 
         mapping = cmp.mapping.preset.insert {
@@ -25,20 +28,8 @@ return {
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
-          -- Accept ([y]es) the completion.
-          --  This will auto-import if your LSP supports it.
-          --  This will expand snippets if the LSP sent a snippet.
           ['<C-y>'] = cmp.mapping.confirm { select = true },
 
-          -- If you prefer more traditional completion keymaps,
-          -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
-
-          -- Manually trigger a completion from nvim-cmp.
-          --  Generally you don't need this, because nvim-cmp will display
-          --  completions whenever it has completion options available.
           ['<C-Space>'] = cmp.mapping.complete {},
 
           -- Think of <c-l> as moving to the right of your snippet expansion.
@@ -64,7 +55,8 @@ return {
           { name = 'nvim_lsp' },
           { name = 'path' },
         }, {
-          name = 'buffer',
+          { name = 'buffer' },
+          { name = 'emoji' },
         }),
       }
 
