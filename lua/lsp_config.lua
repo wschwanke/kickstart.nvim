@@ -106,14 +106,23 @@ return {
       end,
     })
 
-    local lspconfig = require 'lspconfig'
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-    local languages = require('efmls-configs.defaults').languages()
+
+    local languages = vim.tbl_keys(require('efmls-configs.defaults').languages() or {})
+    vim.list_extend(languages, {
+      svelte = {
+        require('efmls-configs.linters.eslint'),
+        require('efmls-configs.formatters.eslint')
+      },
+      html = {
+        require('efmls-configs.formatters.prettier')
+      }
+    })
 
     local servers = {
       efm = {
-        filetypes = { 'lua', 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' },
+        filetypes = { 'lua', 'typescript', 'javascript', 'typescriptreact', 'javascriptreact', 'svelte' },
         init_options = {
           documentFormatting = true,
           documentRangeFormatting = true,
