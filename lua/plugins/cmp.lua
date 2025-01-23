@@ -1,5 +1,5 @@
 return {
-  { -- Autocompletion
+  {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
@@ -12,11 +12,22 @@ return {
     },
     config = function()
       local cmp = require 'cmp'
-      local lspkind = require 'lspkind'
+      local lspkind = require('lspkind')
 
       cmp.setup {
-        format = lspkind.cmp_format {},
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = "symbol_text",
+            preset = 'codicons',
+          }
+        },
         completion = { completeopt = 'menu,menuone,noinsert' },
+
+        window = {
+          completion = {
+            side_padding = 1
+          }
+        },
 
         mapping = cmp.mapping.preset.insert {
           -- Select the [n]ext item
@@ -53,12 +64,20 @@ return {
         },
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
-          { name = 'path' },
         }, {
+          -- { name = 'path' },
           { name = 'buffer' },
           { name = 'emoji' },
         }),
       }
+
+      -- `/` cmdline setup.
+      cmp.setup.cmdline('/', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
 
       -- Command line ':' completion
       cmp.setup.cmdline(':', {

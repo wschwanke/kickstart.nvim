@@ -7,7 +7,7 @@ return {
     { 'williamboman/mason.nvim', opts = {} },
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-    { 'j-hui/fidget.nvim', opts = {} },
+    { 'j-hui/fidget.nvim',       opts = {} },
     'creativenull/efmls-configs-nvim',
   },
 
@@ -33,7 +33,7 @@ return {
         -- end, opts)
 
         map('K', vim.lsp.buf.hover, 'Hover')
-        map('<C-h>', vim.lsp.buf.hover, 'Signature Help', 'i')
+        map('<C-h>', vim.lsp.buf.signature_help, 'Signature Help', 'i')
 
         map('<leader>vd', require('telescope.builtin').diagnostics, 'Open [D]iagnostics')
         map('<leader>vrr', require('telescope.builtin').lsp_references, '[R]eferences')
@@ -109,16 +109,27 @@ return {
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-    local languages = vim.tbl_keys(require('efmls-configs.defaults').languages() or {})
-    vim.list_extend(languages, {
+    local jsEfmlsConfigs = {
+      require('efmls-configs.linters.eslint'),
+      require('efmls-configs.formatters.prettier'),
+    }
+    local languages = {
       svelte = {
         require('efmls-configs.linters.eslint'),
-        require('efmls-configs.formatters.eslint')
+        require('efmls-configs.formatters.prettier'),
       },
+      javascript = jsEfmlsConfigs,
+      javascriptreact = jsEfmlsConfigs,
+      typescript = jsEfmlsConfigs,
+      typescriptreact = jsEfmlsConfigs,
       html = {
         require('efmls-configs.formatters.prettier')
+      },
+      lua = {
+        require('efmls-configs.linters.luacheck'),
+        require('efmls-configs.formatters.lua_format')
       }
-    })
+    }
 
     local servers = {
       efm = {
@@ -126,6 +137,10 @@ return {
         init_options = {
           documentFormatting = true,
           documentRangeFormatting = true,
+          hover = true,
+          documentSymbol = true,
+          codeAction = true,
+          completion = true
         },
         settings = {
           rootMarkers = { '.git/' },
@@ -139,7 +154,8 @@ return {
         settings = {
           yaml = {
             schemas = {
-              ['https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible.json'] = '/**/playbooks/**/*.yml',
+              ['https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible.json'] =
+              '/**/playbooks/**/*.yml',
             },
           },
         },
@@ -154,6 +170,7 @@ return {
                 'clsx\\(([^)]*)\\)',
                 'cva\\(([^)]*)\\)',
                 'cn\\(([^)]*)\\)',
+                'tv\\(([^)]*)\\)',
                 '(class|className)=["\'`]([^"\'`]*).*?["\'`]',
               },
             },
@@ -175,13 +192,15 @@ return {
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'csharp_ls',
-      'efm',
       'gopls',
+      'html',
       'jsonls',
       'lua_ls',
-      'rust_analyzer',
       'tailwindcss',
       'ts_ls',
+      'zls',
+      -- 'eslint',
+      -- 'prettier',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
     require('mason-lspconfig').setup {
@@ -203,7 +222,7 @@ return {
         focusable = false,
         style = 'minimal',
         border = 'rounded',
-        source = { 'always' },
+        source = 'always',
         header = '',
         prefix = '',
       },
