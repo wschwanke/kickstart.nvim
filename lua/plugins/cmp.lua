@@ -19,6 +19,12 @@ return {
           format = lspkind.cmp_format {
             mode = "symbol_text",
             preset = 'codicons',
+            maxwidth = {
+              menu = 50,
+              abbr = 50,
+            },
+            ellipsis_char = "...",
+            show_labelDetails = true,
           }
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
