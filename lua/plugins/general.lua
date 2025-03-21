@@ -1,8 +1,8 @@
 return {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  { 'numToStr/Comment.nvim', opts = {}, lazy = false },
-  { 'echasnovski/mini.icons', version = '*' },
-  { 'echasnovski/mini.icons', version = '*' },
+  { 'numToStr/Comment.nvim',  opts = {}, lazy = false },
+  { 'nvim-web-devicons' },
+  { 'echasnovski/mini.icons', dependencies = { 'nvim-tree/nvim-web-devicons' }, version = '*' },
   {
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
@@ -49,7 +49,7 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
+        { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
