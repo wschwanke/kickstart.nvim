@@ -18,8 +18,6 @@ require('lazy').setup({
   },
 })
 
-require 'snippets'
-
 require 'keymaps'
 
 require 'autocmds'

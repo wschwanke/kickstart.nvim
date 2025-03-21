@@ -37,7 +37,4 @@ vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
-
-vim.keymap.set('n', '<leader>f', function()
-  vim.lsp.buf.format { async = false, timeout_ms = 10000 }
-end)
+vim.keymap.set({ 'n', 'v' }, '<leader>c', [["_c]])
