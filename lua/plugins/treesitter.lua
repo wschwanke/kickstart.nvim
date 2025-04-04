@@ -12,6 +12,7 @@ return {
       'html',
       'lua',
       'markdown',
+      'jsdoc',
       'javascript',
       'typescript',
       'css',

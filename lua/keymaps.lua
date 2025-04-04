@@ -38,3 +38,31 @@ vim.keymap.set('n', '<leader>Y', [["+Y]])
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
 vim.keymap.set({ 'n', 'v' }, '<leader>c', [["_c]])
+
+-- Create a variable to track the current state
+local virtual_lines_enabled = false
+
+-- Function to toggle between the two diagnostic configurations
+local function toggle_diagnostic_display()
+  virtual_lines_enabled = not virtual_lines_enabled
+
+  if virtual_lines_enabled then
+    -- Enable virtual_lines for current line
+    vim.diagnostic.config {
+      virtual_text = false,
+      virtual_lines = true,
+    }
+    print 'Diagnostic: Virtual lines enabled'
+  else
+    -- Disable virtual_lines
+    vim.diagnostic.config {
+      virtual_text = true,
+      virtual_lines = false,
+    }
+    print 'Diagnostic: Virtual lines disabled'
+  end
+end
+
+vim.keymap.set('n', '<Leader>dl', toggle_diagnostic_display, { noremap = true, silent = false, desc = 'Toggle diagnostic virtual lines' })
+
+-- You can change <Leader>td to any key combination you prefer
