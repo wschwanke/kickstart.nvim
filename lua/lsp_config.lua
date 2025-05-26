@@ -25,13 +25,6 @@ return {
           vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
-        -- vim.keymap.set('n', '<leader>vd', function()
-        --   vim.diagnostic.open_float()
-        -- end, opts)
-        -- vim.keymap.set('n', '<leader>vrr', function()
-        --   vim.lsp.buf.references()
-        -- end, opts)
-
         map('K', vim.lsp.buf.hover, 'Hover')
         map('<C-s>', vim.lsp.buf.signature_help, 'Signature Help', 'i')
 
@@ -42,7 +35,7 @@ return {
         --  This is where a variable was first declared, or where a function is defined, etc.
         --  To jump back, press <C-t>.
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-        map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+
         -- Find references for the word under your cursor.
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
