@@ -27,7 +27,8 @@ return {
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
 
-		local defaults = { "rg", "--files", "--hidden", "--glob", "!node_modules/**", "--glob", "!.git/**", "--glob", "!.next/**" }
+		local defaults = { "rg", "--files", "--hidden", "--glob", "!node_modules/**", "--glob", "!.git/**", "--glob",
+			"!.next/**" }
 		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 		vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
@@ -36,12 +37,12 @@ return {
 				find_command = defaults,
 			})
 		end, { desc = "[S]earch [F]iles" })
-		vim.keymap.set("n", "<leader>sw", function ()
+		vim.keymap.set("n", "<leader>sw", function()
 			builtin.grep_string({
 				find_command = defaults
 			})
 		end, { desc = "[S]earch current [W]ord" })
-		vim.keymap.set("n", "<leader>sg", function ()
+		vim.keymap.set("n", "<leader>sg", function()
 			builtin.live_grep({
 				find_command = defaults
 			})
