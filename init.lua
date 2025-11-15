@@ -7,12 +7,10 @@ require 'options'
 require 'lazy_init'
 
 require('lazy').setup({
-  require 'lsp_config',
-
-  require 'colorscheme',
-
+  { import = 'lsp' },
   { import = 'plugins' },
-  { import = 'languages' }
+  { import = 'languages' },
+  require 'colorscheme',
 }, {
   change_detection = {
     notify = false,
