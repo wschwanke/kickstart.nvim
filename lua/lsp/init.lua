@@ -72,7 +72,7 @@ return {
         setup = {},
       }
     end,
-    config = function(_, opts)
+    config = vim.schedule_wrap(function(_, opts)
       local have_blink, blink = pcall(require, 'blink.cmp')
       if have_blink then
         opts.servers['*'].capabilities = vim.tbl_deep_extend('force', blink.get_lsp_capabilities(), opts.servers['*'].capabilities or {})
@@ -86,8 +86,13 @@ return {
         end
 
         if type(capability) == 'string' then
-          local provider = capability .. 'Provider'
-          return client.server_capabilities[provider] ~= nil and client.server_capabilities[provider] ~= false
+          local method = capability:find('/') and capability or ('textDocument/' .. capability)
+          local clients = vim.lsp.get_clients {
+            bufnr = vim.api.nvim_get_current_buf(),
+            name = client.name,
+            method = method,
+          }
+          return #clients > 0
         end
 
         if type(capability) == 'table' then
@@ -250,7 +255,7 @@ return {
           },
         }
       end
-    end,
+    end),
   },
 
   {

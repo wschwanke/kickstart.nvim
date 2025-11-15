@@ -10,6 +10,7 @@ require('lazy').setup({
   { import = 'lsp' },
   { import = 'plugins' },
   { import = 'languages' },
+  { import = 'formatting' },
   require 'colorscheme',
 }, {
   change_detection = {
