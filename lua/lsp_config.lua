@@ -132,7 +132,7 @@ return {
         update_in_insert = true,
         severity_sort = true,
         float = { border = 'rounded', source = true },
-        underline = { severity = { min = vim.diagnostic.severity.INFO } },
+        underline = { severity = { min = vim.diagnostic.severity.HINT } },
         signs = vim.g.have_nerd_font and {
           text = {
             [vim.diagnostic.severity.ERROR] = '󰅚 ',

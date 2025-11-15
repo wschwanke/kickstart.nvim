@@ -111,6 +111,9 @@ return {
       },
 
       completion = {
+        trigger = {
+          show_on_backspace = true,
+        },
         accept = {
           -- experimental auto-brackets support
           auto_brackets = {
@@ -171,34 +174,13 @@ return {
       },
 
       sources = {
-        -- adding any nvim-cmp sources here will enable them
-        -- with blink.compat
-        compat = {},
+        -- -- adding any nvim-cmp sources here will enable them
+        -- -- with blink.compat
+        -- compat = {},
         default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
 
-      providers = {
-        emoji = {
-          module = "blink-emoji",
-          name = "Emoji",
-          score_offset = 15, -- Tune by preference
-          opts = {
-            insert = true,   -- Insert emoji (default) or complete its name
-            ---@type string|table|fun():table
-            trigger = function()
-              return { ":" }
-            end,
-          },
-          should_show_items = function()
-            return vim.tbl_contains(
-            -- Enable emoji completion only for git commits and markdown.
-            -- By default, enabled for all file-types.
-              { "gitcommit", "markdown" },
-              vim.o.filetype
-            )
-          end,
-        }
-      },
+      -- providers = {},
 
       cmdline = {
         enabled = true,
@@ -218,24 +200,24 @@ return {
         },
       },
     },
-    ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
-    config = function(_, opts)
-      -- setup compat sources
-      local enabled = opts.sources.default
-      for _, source in ipairs(opts.sources.compat or {}) do
-        opts.sources.providers[source] = vim.tbl_deep_extend(
-          'force',
-          { name = source, module = 'blink.compat.source' },
-          opts.sources.providers[source] or {}
-        )
-        if type(enabled) == 'table' and not vim.tbl_contains(enabled, source) then
-          table.insert(enabled, source)
-        end
-      end
-
-      -- Unset custom prop to pass blink.cmp validation
-      opts.sources.compat = nil
-      require('blink.cmp').setup(opts)
-    end
+    -- ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
+    -- config = function(_, opts)
+    --   -- setup compat sources
+    --   local enabled = opts.sources.default
+    --   for _, source in ipairs(opts.sources.compat or {}) do
+    --     opts.sources.providers[source] = vim.tbl_deep_extend(
+    --       'force',
+    --       { name = source, module = 'blink.compat.source' },
+    --       opts.sources.providers[source] or {}
+    --     )
+    --     if type(enabled) == 'table' and not vim.tbl_contains(enabled, source) then
+    --       table.insert(enabled, source)
+    --     end
+    --   end
+    --
+    --   -- Unset custom prop to pass blink.cmp validation
+    --   opts.sources.compat = nil
+    --   require('blink.cmp').setup(opts)
+    -- end
   }
 }

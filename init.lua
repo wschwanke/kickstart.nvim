@@ -12,6 +12,7 @@ require('lazy').setup({
   require 'colorscheme',
 
   { import = 'plugins' },
+  { import = 'languages' }
 }, {
   change_detection = {
     notify = false,
