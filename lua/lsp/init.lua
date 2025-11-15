@@ -1,149 +1,287 @@
 return {
   {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    'neovim/nvim-lspconfig',
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      "saghen/blink.cmp",
-      { "mason-org/mason.nvim", opts = {} },
-      "mason-org/mason-lspconfig.nvim",
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
-      { "j-hui/fidget.nvim", opts = {} },
+      'saghen/blink.cmp',
+      { 'mason-org/mason.nvim', opts = {} },
+      { 'mason-org/mason-lspconfig.nvim', config = function() end },
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      { 'j-hui/fidget.nvim', opts = {} },
     },
-    opts = {
-      diagnostics = {
-        update_in_insert = true,
-        severity_sort = true,
-        float = { border = "rounded", source = true },
-        underline = { severity = { min = vim.diagnostic.severity.HINT } },
-        signs = vim.g.have_nerd_font and {
-          text = {
-            [vim.diagnostic.severity.ERROR] = "󰅚 ",
-            [vim.diagnostic.severity.WARN] = "󰀪 ",
-            [vim.diagnostic.severity.INFO] = "󰋽 ",
-            [vim.diagnostic.severity.HINT] = "󰌶 ",
+    opts_extend = { 'servers.*.keys' },
+    opts = function()
+      return {
+        diagnostics = {
+          update_in_insert = true,
+          severity_sort = true,
+          float = { border = 'rounded', source = true },
+          underline = { severity = { min = vim.diagnostic.severity.HINT } },
+          signs = vim.g.have_nerd_font and {
+            text = {
+              [vim.diagnostic.severity.ERROR] = '󰅚 ',
+              [vim.diagnostic.severity.WARN] = '󰀪 ',
+              [vim.diagnostic.severity.INFO] = '󰋽 ',
+              [vim.diagnostic.severity.HINT] = '󰌶 ',
+            },
+          } or {},
+          virtual_text = {
+            source = 'if_many',
+            spacing = 2,
+            format = function(diagnostic)
+              local diagnostic_message = {
+                [vim.diagnostic.severity.ERROR] = diagnostic.message,
+                [vim.diagnostic.severity.WARN] = diagnostic.message,
+                [vim.diagnostic.severity.INFO] = diagnostic.message,
+                [vim.diagnostic.severity.HINT] = diagnostic.message,
+              }
+              return diagnostic_message[diagnostic.severity]
+            end,
           },
-        } or {},
-        virtual_text = {
-          source = "if_many",
-          spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
         },
-      },
-      servers = {
-        ["*"] = {
-          capabilities = {},
+        inlay_hints = {
+          enabled = true,
+          exclude = {},
         },
-      },
-      setup = {},
-    },
+        codelens = {
+          enabled = true,
+        },
+        folds = {
+          enabled = false,
+        },
+        servers = {
+          ['*'] = {
+            capabilities = {},
+            keys = {
+              { 'K', vim.lsp.buf.hover, desc = 'Hover' },
+              { '<C-s>', vim.lsp.buf.signature_help, mode = 'i', desc = 'Signature Help', has = 'signatureHelp' },
+              { '<leader>vd', '<cmd>Telescope diagnostics<cr>', desc = 'LSP: Open [D]iagnostics' },
+              { '<leader>vrr', '<cmd>Telescope lsp_references<cr>', desc = 'LSP: [R]eferences' },
+              { 'gd', '<cmd>Telescope lsp_definitions<cr>', desc = 'LSP: [G]oto [D]efinition', has = 'definition' },
+              { 'gr', '<cmd>Telescope lsp_references<cr>', desc = 'LSP: [G]oto [R]eferences' },
+              { 'gI', '<cmd>Telescope lsp_implementations<cr>', desc = 'LSP: [G]oto [I]mplementation' },
+              { '<leader>vD', '<cmd>Telescope lsp_type_definitions<cr>', desc = 'LSP: Type [D]efinition' },
+              { '<leader>vds', '<cmd>Telescope lsp_document_symbols<cr>', desc = 'LSP: [D]ocument [S]ymbols' },
+              { '<leader>vws', '<cmd>Telescope lsp_dynamic_workspace_symbols<cr>', desc = 'LSP: [W]orkspace [S]ymbols' },
+              { '<leader>vrn', vim.lsp.buf.rename, desc = 'LSP: [R]e[n]ame', has = 'rename' },
+              { '<leader>vca', vim.lsp.buf.code_action, desc = 'LSP: [C]ode [A]ction', mode = { 'n', 'x' }, has = 'codeAction' },
+              { 'gD', vim.lsp.buf.declaration, desc = 'LSP: [G]oto [D]eclaration' },
+            },
+          },
+        },
+        setup = {},
+      }
+    end,
     config = function(_, opts)
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
-        callback = function(event)
-          local map = function(keys, func, desc, mode)
-            mode = mode or "n"
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-          end
+      local have_blink, blink = pcall(require, 'blink.cmp')
+      if have_blink then
+        opts.servers['*'].capabilities = vim.tbl_deep_extend('force', blink.get_lsp_capabilities(), opts.servers['*'].capabilities or {})
+      end
 
-          map("K", vim.lsp.buf.hover, "Hover")
-          map("<C-s>", vim.lsp.buf.signature_help, "Signature Help", "i")
-          map("<leader>vd", require("telescope.builtin").diagnostics, "Open [D]iagnostics")
-          map("<leader>vrr", require("telescope.builtin").lsp_references, "[R]eferences")
-          map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-          map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-          map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-          map("<leader>vD", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-          map("<leader>vds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-          map("<leader>vws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-          map("<leader>vrn", vim.lsp.buf.rename, "[R]e[n]ame")
-          map("<leader>vca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
-          map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+      vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
-          ---@param client vim.lsp.Client
-          ---@param method vim.lsp.protocol.Method
-          ---@param bufnr? integer
-          ---@return boolean
-          local function client_supports_method(client, method, bufnr)
-            if vim.fn.has("nvim-0.11") == 1 then
-              return client:supports_method(method, bufnr)
-            else
-              return client.supports_method(method, { bufnr = bufnr })
+      local function check_capability(client, capability)
+        if not capability then
+          return true
+        end
+
+        if type(capability) == 'string' then
+          local provider = capability .. 'Provider'
+          return client.server_capabilities[provider] ~= nil and client.server_capabilities[provider] ~= false
+        end
+
+        if type(capability) == 'table' then
+          for _, cap in ipairs(capability) do
+            if check_capability(client, cap) then
+              return true
             end
           end
+          return false
+        end
 
+        return true
+      end
+
+      local function setup_keymaps(client, buffer)
+        local Keys = require 'lazy.core.handler.keys'
+        local keymaps = {}
+
+        for _, value in ipairs(opts.servers['*'].keys or {}) do
+          keymaps[#keymaps + 1] = value
+        end
+
+        local server_name = client.name
+        if opts.servers[server_name] and opts.servers[server_name].keys then
+          for _, value in ipairs(opts.servers[server_name].keys) do
+            keymaps[#keymaps + 1] = value
+          end
+        end
+
+        for _, keys in pairs(Keys.resolve(keymaps)) do
+          if check_capability(client, keys.has) then
+            local keymap_opts = Keys.opts(keys)
+            keymap_opts.has = nil
+            keymap_opts.buffer = buffer
+            vim.keymap.set(keys.mode or 'n', keys.lhs, keys.rhs, keymap_opts)
+          end
+        end
+      end
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+        callback = function(event)
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if
-            client
-            and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf)
-          then
-            local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
-            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.document_highlight,
-            })
+          if client then
+            setup_keymaps(client, event.buf)
 
-            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.clear_references,
-            })
+            if client.server_capabilities.documentHighlightProvider then
+              local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
+              vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+                buffer = event.buf,
+                group = highlight_augroup,
+                callback = vim.lsp.buf.document_highlight,
+              })
 
-            vim.api.nvim_create_autocmd("LspDetach", {
-              group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
-              callback = function(event2)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
-              end,
-            })
+              vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+                buffer = event.buf,
+                group = highlight_augroup,
+                callback = vim.lsp.buf.clear_references,
+              })
+
+              vim.api.nvim_create_autocmd('LspDetach', {
+                group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
+                callback = function(event2)
+                  vim.lsp.buf.clear_references()
+                  vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
+                end,
+              })
+            end
           end
         end,
       })
 
-      vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
-
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
-      if opts.servers["*"] then
-        opts.servers["*"].capabilities =
-          vim.tbl_deep_extend("force", capabilities, opts.servers["*"].capabilities or {})
+      if opts.inlay_hints.enabled then
+        vim.api.nvim_create_autocmd('LspAttach', {
+          group = vim.api.nvim_create_augroup('lsp-inlay-hints', { clear = true }),
+          callback = function(event)
+            local client = vim.lsp.get_client_by_id(event.data.client_id)
+            if
+              client
+              and client.server_capabilities.inlayHintProvider
+              and vim.api.nvim_buf_is_valid(event.buf)
+              and vim.bo[event.buf].buftype == ''
+              and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[event.buf].filetype)
+            then
+              vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+            end
+          end,
+        })
       end
 
-      local ensure_installed = vim.tbl_keys(opts.servers or {})
-      vim.list_extend(ensure_installed, { "biome" })
+      if opts.codelens.enabled and vim.lsp.codelens then
+        vim.api.nvim_create_autocmd('LspAttach', {
+          group = vim.api.nvim_create_augroup('lsp-codelens', { clear = true }),
+          callback = function(event)
+            local client = vim.lsp.get_client_by_id(event.data.client_id)
+            if client and client.server_capabilities.codeLensProvider then
+              vim.lsp.codelens.refresh()
+              vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+                buffer = event.buf,
+                callback = vim.lsp.codelens.refresh,
+              })
+            end
+          end,
+        })
+      end
+
+      if opts.servers['*'] then
+        vim.lsp.config('*', opts.servers['*'])
+      end
+
+      local have_mason, mason_lspconfig = pcall(require, 'mason-lspconfig')
+      local all_servers = have_mason and vim.tbl_keys(require('mason-lspconfig.mappings').get_mason_map().lspconfig_to_package) or {}
+      local mason_exclude = {}
+
+      local function configure(server)
+        if server == '*' then
+          return false
+        end
+
+        local server_opts = opts.servers[server]
+        server_opts = server_opts == true and {} or (not server_opts) and { enabled = false } or server_opts
+
+        if server_opts.enabled == false then
+          mason_exclude[#mason_exclude + 1] = server
+          return
+        end
+
+        local use_mason = server_opts.mason ~= false and vim.tbl_contains(all_servers, server)
+        local setup = opts.setup[server] or opts.setup['*']
+
+        if setup and setup(server, server_opts) then
+          mason_exclude[#mason_exclude + 1] = server
+        else
+          vim.lsp.config(server, server_opts)
+          if not use_mason then
+            vim.lsp.enable(server)
+          end
+        end
+
+        return use_mason
+      end
+
+      local ensure_installed = vim.tbl_filter(configure, vim.tbl_keys(opts.servers))
+      vim.list_extend(ensure_installed, { 'biome' })
 
       local filtered_ensure = vim.tbl_filter(function(server)
-        return server ~= "*"
+        return server ~= '*'
       end, ensure_installed)
 
-      require("mason-tool-installer").setup({ ensure_installed = filtered_ensure })
+      require('mason-tool-installer').setup { ensure_installed = filtered_ensure }
 
-      require("mason-lspconfig").setup({
-        ensure_installed = {},
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = opts.servers[server_name] or {}
-            server.capabilities =
-              vim.tbl_deep_extend("force", {}, opts.servers["*"].capabilities or {}, server.capabilities or {})
+      if have_mason then
+        mason_lspconfig.setup {
+          ensure_installed = {},
+          automatic_installation = false,
+          handlers = {
+            function(server_name)
+              vim.lsp.enable(server_name)
+            end,
+          },
+        }
+      end
+    end,
+  },
 
-            if opts.setup[server_name] then
-              if opts.setup[server_name](server_name, server) then
-                return
-              end
-            end
+  {
+    'mason-org/mason.nvim',
+    cmd = 'Mason',
+    keys = { { '<leader>cm', '<cmd>Mason<cr>', desc = 'Mason' } },
+    build = ':MasonUpdate',
+    opts_extend = { 'ensure_installed' },
+    opts = {
+      ensure_installed = {},
+    },
+    config = function(_, opts)
+      require('mason').setup(opts)
+      local mr = require 'mason-registry'
+      mr:on('package:install:success', function()
+        vim.defer_fn(function()
+          require('lazy.core.handler.event').trigger {
+            event = 'FileType',
+            buf = vim.api.nvim_get_current_buf(),
+          }
+        end, 100)
+      end)
 
-            require("lspconfig")[server_name].setup(server)
-          end,
-        },
-      })
+      mr.refresh(function()
+        for _, tool in ipairs(opts.ensure_installed) do
+          local p = mr.get_package(tool)
+          if not p:is_installed() then
+            p:install()
+          end
+        end
+      end)
     end,
   },
 }

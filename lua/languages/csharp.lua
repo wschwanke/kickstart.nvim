@@ -4,6 +4,9 @@ return {
     opts = {
       servers = {
         csharp_ls = {},
+        omnisharp = {
+          enabled = false,
+        },
       },
     },
   },
