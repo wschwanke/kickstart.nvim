@@ -1,103 +1,105 @@
 return {
   -- LuaSnip configuration (separate plugin)
   {
-    'L3MON4D3/LuaSnip',
-    version = 'v2.*',
+    "L3MON4D3/LuaSnip",
+    version = "v2.*",
     config = function()
-      require('luasnip.loaders.from_snipmate').lazy_load({
-        paths = { vim.fn.stdpath('config') .. '/my-custom-snippets' }
+      require("luasnip.loaders.from_snipmate").lazy_load({
+        paths = { vim.fn.stdpath("config") .. "/my-custom-snippets" },
       })
-    end
+    end,
   },
 
   -- blink.compat for emoji (if using Option B)
   {
-    'saghen/blink.compat',
-    version = '2.*',
+    "saghen/blink.compat",
+    version = "2.*",
     lazy = true,
     opts = {},
   },
 
   -- blink.cmp configuration
   {
-    'saghen/blink.cmp',
-    version = '1.*',
+    "saghen/blink.cmp",
+    version = "1.*",
     dependencies = {
-      'rafamadriz/friendly-snippets',
-      'moyiz/blink-emoji.nvim', -- Option A for emoji
-      'onsails/lspkind-nvim',
+      "rafamadriz/friendly-snippets",
+      "moyiz/blink-emoji.nvim", -- Option A for emoji
+      "onsails/lspkind-nvim",
     },
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
       keymap = {
-        preset = 'default',
-        ['<A-1>'] = {
+        preset = "default",
+        ["<Tab>"] = {},
+        ["<S-Tab>"] = {},
+        ["<A-1>"] = {
           function(cmp)
-            cmp.accept { index = 1 }
+            cmp.accept({ index = 1 })
           end,
         },
-        ['<A-2>'] = {
+        ["<A-2>"] = {
           function(cmp)
-            cmp.accept { index = 2 }
+            cmp.accept({ index = 2 })
           end,
         },
-        ['<A-3>'] = {
+        ["<A-3>"] = {
           function(cmp)
-            cmp.accept { index = 3 }
+            cmp.accept({ index = 3 })
           end,
         },
-        ['<A-4>'] = {
+        ["<A-4>"] = {
           function(cmp)
-            cmp.accept { index = 4 }
+            cmp.accept({ index = 4 })
           end,
         },
-        ['<A-5>'] = {
+        ["<A-5>"] = {
           function(cmp)
-            cmp.accept { index = 5 }
+            cmp.accept({ index = 5 })
           end,
         },
-        ['<A-6>'] = {
+        ["<A-6>"] = {
           function(cmp)
-            cmp.accept { index = 6 }
+            cmp.accept({ index = 6 })
           end,
         },
-        ['<A-7>'] = {
+        ["<A-7>"] = {
           function(cmp)
-            cmp.accept { index = 7 }
+            cmp.accept({ index = 7 })
           end,
         },
-        ['<A-8>'] = {
+        ["<A-8>"] = {
           function(cmp)
-            cmp.accept { index = 8 }
+            cmp.accept({ index = 8 })
           end,
         },
-        ['<A-9>'] = {
+        ["<A-9>"] = {
           function(cmp)
-            cmp.accept { index = 9 }
+            cmp.accept({ index = 9 })
           end,
         },
-        ['<A-0>'] = {
+        ["<A-0>"] = {
           function(cmp)
-            cmp.accept { index = 10 }
+            cmp.accept({ index = 10 })
           end,
         },
-        ['<C-l>'] = { 'snippet_forward', 'fallback' },
-        ['<C-h>'] = { 'snippet_backward', 'fallback' },
+        ["<C-l>"] = { "snippet_forward", "fallback" },
+        ["<C-h>"] = { "snippet_backward", "fallback" },
       },
 
       fuzzy = {
         sorts = {
-          'exact',
-          'score',
-          'sort_text',
+          "exact",
+          "score",
+          "sort_text",
         },
       },
 
       -- Snippets
       snippets = {
-        preset = 'luasnip'
+        preset = "luasnip",
       },
 
       appearance = {
@@ -107,7 +109,7 @@ return {
         use_nvim_cmp_as_default = false,
         -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- adjusts spacing to ensure icons are aligned
-        nerd_font_variant = 'mono',
+        nerd_font_variant = "mono",
       },
 
       completion = {
@@ -124,26 +126,26 @@ return {
           min_width = 15,
           max_height = 10,
           draw = {
-            treesitter = { 'lsp' },
-            columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" }, { 'item_idx' } },
+            treesitter = { "lsp" },
+            columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" }, { "item_idx" } },
             components = {
               item_idx = {
                 text = function(ctx)
-                  return ctx.idx == 10 and '0' or ctx.idx >= 10 and ' ' or tostring(ctx.idx)
+                  return ctx.idx == 10 and "0" or ctx.idx >= 10 and " " or tostring(ctx.idx)
                 end,
-                highlight = 'BlinkCmpItemIdx', -- optional, only if you want to change its color
+                highlight = "BlinkCmpItemIdx", -- optional, only if you want to change its color
               },
               kind_icon = {
                 text = function(ctx)
                   local icon = ctx.kind_icon
-                  if vim.tbl_contains({ 'Path' }, ctx.source_name) then
-                    local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
                     if dev_icon then
                       icon = dev_icon
                     end
                   else
-                    icon = require('lspkind').symbolic(ctx.kind, {
-                      mode = 'symbol',
+                    icon = require("lspkind").symbolic(ctx.kind, {
+                      mode = "symbol",
                     })
                   end
 
@@ -155,8 +157,8 @@ return {
                 -- keep the highlight groups in sync with the icons.
                 highlight = function(ctx)
                   local hl = ctx.kind_hl
-                  if vim.tbl_contains({ 'Path' }, ctx.source_name) then
-                    local dev_icon, dev_hl = require('nvim-web-devicons').get_icon(ctx.label)
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
                     if dev_icon then
                       hl = dev_hl
                     end
@@ -177,7 +179,7 @@ return {
         -- -- adding any nvim-cmp sources here will enable them
         -- -- with blink.compat
         -- compat = {},
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        default = { "lsp", "path", "snippets", "buffer" },
       },
 
       -- providers = {},
@@ -185,15 +187,15 @@ return {
       cmdline = {
         enabled = true,
         keymap = {
-          preset = 'cmdline',
-          ['<Right>'] = false,
-          ['<Left>'] = false,
+          preset = "cmdline",
+          ["<Right>"] = false,
+          ["<Left>"] = false,
         },
         completion = {
           list = { selection = { preselect = false } },
           menu = {
             auto_show = function(ctx)
-              return vim.fn.getcmdtype() == ':'
+              return vim.fn.getcmdtype() == ":"
             end,
           },
           ghost_text = { enabled = true },
@@ -219,5 +221,5 @@ return {
     --   opts.sources.compat = nil
     --   require('blink.cmp').setup(opts)
     -- end
-  }
+  },
 }
