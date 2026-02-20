@@ -30,23 +30,14 @@ return {
       opts.formatters_by_ft = opts.formatters_by_ft or {}
       for _, ft in ipairs(supported) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
-        table.insert(opts.formatters_by_ft[ft], "biome")
+        table.insert(opts.formatters_by_ft[ft], 1, "biome")
+        opts.formatters_by_ft[ft].stop_after_first = true
       end
 
       opts.formatters = opts.formatters or {}
       opts.formatters.biome = {
         require_cwd = true,
       }
-    end,
-  },
-
-  {
-    "nvimtools/none-ls.nvim",
-    optional = true,
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, nls.builtins.formatting.biome)
     end,
   },
 }

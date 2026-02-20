@@ -1,15 +1,4 @@
 return {
-  -- LuaSnip configuration (separate plugin)
-  {
-    "L3MON4D3/LuaSnip",
-    version = "v2.*",
-    config = function()
-      require("luasnip.loaders.from_snipmate").lazy_load({
-        paths = { vim.fn.stdpath("config") .. "/my-custom-snippets" },
-      })
-    end,
-  },
-
   -- blink.compat for emoji (if using Option B)
   {
     "saghen/blink.compat",
@@ -95,11 +84,6 @@ return {
           "score",
           "sort_text",
         },
-      },
-
-      -- Snippets
-      snippets = {
-        preset = "luasnip",
       },
 
       appearance = {
@@ -188,8 +172,8 @@ return {
         enabled = true,
         keymap = {
           preset = "cmdline",
-          ["<Right>"] = false,
-          ["<Left>"] = false,
+          ["<Right>"] = {},
+          ["<Left>"] = {},
         },
         completion = {
           list = { selection = { preselect = false } },

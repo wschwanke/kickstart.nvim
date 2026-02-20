@@ -8,8 +8,7 @@ return {
       require('catppuccin').setup {
         flavour = 'mocha',
         integrations = {
-          cmp = true,
-          fzf = true,
+          blink_cmp = true,
           treesitter = true,
           telescope = true,
           which_key = true,

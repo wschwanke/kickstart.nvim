@@ -65,6 +65,6 @@ return {
 
     vim.keymap.set('n', '<leader>ta', function()
       require('neotest').run.run(vim.fn.getcwd())
-    end, { desc = 'Debug: Open test output' })
+    end, { desc = 'Debug: Run All Tests' })
   end,
 }

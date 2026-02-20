@@ -2,11 +2,6 @@ return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
   opts = {
-    filesystem = {
-      filtered_items = {
-        visible = true,
-      },
-    },
     ensure_installed = {
       'bash',
       'html',

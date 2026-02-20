@@ -82,6 +82,7 @@ return {
                 mode = { "n", "x" },
                 has = "codeAction",
               },
+              { "<leader>lw", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "LSP: [W]orkspace Symbols" },
               { "<leader>le", vim.diagnostic.open_float, desc = "LSP: Diagnostic [E]rror Float" },
               { "<leader>lc", vim.lsp.codelens.run, desc = "LSP: [C]odelens Run" },
             },

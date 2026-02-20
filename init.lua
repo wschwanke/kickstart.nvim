@@ -11,7 +11,6 @@ require('lazy').setup({
   { import = 'plugins' },
   { import = 'languages' },
   { import = 'formatting' },
-  require 'colorscheme',
 }, {
   change_detection = {
     notify = false,
