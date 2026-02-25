@@ -1,7 +1,13 @@
 return {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  { 'nvim-web-devicons' },
-  { 'echasnovski/mini.icons', dependencies = { 'nvim-tree/nvim-web-devicons' }, version = '*' },
+  {
+    'echasnovski/mini.icons',
+    version = '*',
+    config = function()
+      require('mini.icons').setup()
+      MiniIcons.mock_nvim_web_devicons()
+    end,
+  },
   {
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
@@ -48,12 +54,14 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>l', group = '[L]SP',      mode = { 'n', 'x' } },
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>t', group = '[T]est' },
-        { '<leader>h', group = '[H]arpoon',  mode = { 'n', 'v' } },
-        { '<leader>g', group = '[G]it' },
-        { '<leader>u', group = '[U]ndotree' },
+        { '<leader>l',  group = '[L]SP',       mode = { 'n', 'x' } },
+        { '<leader>s',  group = '[S]earch' },
+        { '<leader>t',  group = '[T]est' },
+        { '<leader>h',  group = '[H]arpoon',   mode = { 'n', 'v' } },
+        { '<leader>g',  group = '[G]it' },
+        { '<leader>gh', group = 'Git [H]unks', mode = { 'n', 'x' } },
+        { '<leader>u',  group = '[U]ndotree' },
+        { '<leader>n',  group = 'Swap [N]ode' },
       },
     },
   },

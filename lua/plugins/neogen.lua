@@ -3,11 +3,11 @@ return {
   cmd = "Neogen",
   keys = {
     {
-      "<leader>cn",
+      "<leader>ln",
       function()
         require("neogen").generate()
       end,
-      desc = "Generate Annotations (Neogen)",
+      desc = "LSP: Generate A[n]notations (Neogen)",
     },
   },
   opts = {},

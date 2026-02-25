@@ -13,12 +13,12 @@ return {
         desc = "[F]ormat buffer",
       },
       {
-        "<leader>cF",
+        "<leader>F",
         function()
           require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
         end,
         mode = { "n", "x" },
-        desc = "Format Injected Langs",
+        desc = "[F]ormat Injected Langs",
       },
     },
     opts = {
@@ -32,7 +32,6 @@ return {
       },
       formatters_by_ft = {
         lua = { "stylua" },
-        fish = { "fish_indent" },
         sh = { "shfmt" },
         cs = { "csharpier" },
       },

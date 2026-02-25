@@ -1,9 +1,14 @@
 return {
   {
-    'neovim/nvim-lspconfig',
+    "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        html = {},
+        html = {
+          filetypes = {
+            "html",
+            "razor",
+          },
+        },
       },
     },
   },

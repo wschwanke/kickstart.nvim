@@ -16,7 +16,7 @@ return {
             'typescript.tsx',
           },
           settings = {
-            complete_function_calls = true,
+            complete_function_calls = false,
             vtsls = {
               enableMoveToFileCodeAction = true,
               autoUseWorkspaceTsdk = true,
@@ -30,7 +30,7 @@ return {
             typescript = {
               updateImportsOnFileMove = { enabled = 'always' },
               suggest = {
-                completeFunctionCalls = true,
+                completeFunctionCalls = false,
               },
               inlayHints = {
                 enumMemberValues = { enabled = true },
@@ -44,7 +44,7 @@ return {
             javascript = {
               updateImportsOnFileMove = { enabled = 'always' },
               suggest = {
-                completeFunctionCalls = true,
+                completeFunctionCalls = false,
               },
               inlayHints = {
                 enumMemberValues = { enabled = true },

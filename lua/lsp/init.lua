@@ -49,7 +49,7 @@ return {
           },
         },
         inlay_hints = {
-          enabled = false,
+          enabled = true,
           exclude = {},
         },
         codelens = {
@@ -85,6 +85,24 @@ return {
               { "<leader>lw", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "LSP: [W]orkspace Symbols" },
               { "<leader>le", vim.diagnostic.open_float, desc = "LSP: Diagnostic [E]rror Float" },
               { "<leader>lc", vim.lsp.codelens.run, desc = "LSP: [C]odelens Run" },
+              {
+                "<leader>li",
+                function()
+                  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+                end,
+                desc = "LSP: Toggle [I]nlay Hints",
+              },
+              {
+                "<leader>lv",
+                function()
+                  local virtual_lines_enabled = vim.diagnostic.config().virtual_lines
+                  vim.diagnostic.config({
+                    virtual_text = virtual_lines_enabled and true or false,
+                    virtual_lines = not virtual_lines_enabled,
+                  })
+                end,
+                desc = "LSP: Toggle [V]irtual Lines",
+              },
             },
           },
         },

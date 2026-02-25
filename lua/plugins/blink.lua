@@ -101,9 +101,8 @@ return {
           show_on_backspace = true,
         },
         accept = {
-          -- experimental auto-brackets support
           auto_brackets = {
-            enabled = false,
+            enabled = true,
           },
         },
         menu = {
