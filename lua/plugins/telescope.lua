@@ -74,10 +74,10 @@ return {
       builtin.find_files({ cwd = vim.fn.stdpath("config") })
     end, { desc = "[S]earch [N]eovim files" })
 
-    vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "Git: [C]ommits" })
-    vim.keymap.set("n", "<leader>gC", builtin.git_bcommits, { desc = "Git: Buffer [C]ommits" })
-    vim.keymap.set("n", "<leader>gb", builtin.git_branches, { desc = "Git: [B]ranches" })
-    vim.keymap.set("n", "<leader>gS", builtin.git_stash, { desc = "Git: [S]tash" })
+    -- vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "Git: [C]ommits" })
+    -- vim.keymap.set("n", "<leader>gC", builtin.git_bcommits, { desc = "Git: Buffer [C]ommits" })
+    -- vim.keymap.set("n", "<leader>gb", builtin.git_branches, { desc = "Git: [B]ranches" })
+    -- vim.keymap.set("n", "<leader>gS", builtin.git_stash, { desc = "Git: [S]tash" })
 
     vim.keymap.set("n", "<leader>scw", function()
       local word = vim.fn.expand("<cword>")

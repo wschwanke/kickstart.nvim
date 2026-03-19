@@ -6,15 +6,15 @@ return {
         gopls = {
           settings = {
             gopls = {
-              gofumpt = true,
+              gofumpt = false,
               codelenses = {
-                gc_details = false,
-                generate = true,
-                regenerate_cgo = true,
+                gc_details = true,
+                generate = false,
+                regenerate_cgo = false,
                 run_govulncheck = true,
-                test = true,
+                test = false,
                 tidy = true,
-                upgrade_dependency = true,
+                upgrade_dependency = false,
                 vendor = true,
               },
               hints = {
