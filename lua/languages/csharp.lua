@@ -4,7 +4,7 @@ return {
     opts = {
       servers = {
         roslyn = {
-          filetypes = { "cs" },
+          filetypes = { "cs", "razor" },
           root_dir = function(fname)
             local util = require("lspconfig.util")
             return util.root_pattern("*.sln", "*.csproj", "Directory.Build.props")(fname)
@@ -47,6 +47,6 @@ return {
   },
   {
     "seblyng/roslyn.nvim",
-    ft = "cs",
+    ft = { "cs", "razor" },
   },
 }

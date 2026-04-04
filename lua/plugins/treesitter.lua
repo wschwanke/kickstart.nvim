@@ -21,6 +21,8 @@ return {
       'sql',
       'graphql',
       'php',
+      'razor',
+      'c_sharp',
     },
     auto_install = true,
     highlight = {
