@@ -1,55 +1,58 @@
 return {
-  "nvim-treesitter/nvim-treesitter-textobjects",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = { "nvim-treesitter/nvim-treesitter" },
-  opts = {},
+  'nvim-treesitter/nvim-treesitter-textobjects',
+  branch = 'main',
+  event = { 'BufReadPre', 'BufNewFile' },
+  dependencies = { 'nvim-treesitter/nvim-treesitter' },
   config = function()
-    require("nvim-treesitter.configs").setup({
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ["af"] = { query = "@function.outer", desc = "Around Function" },
-            ["if"] = { query = "@function.inner", desc = "Inside Function" },
-            ["ac"] = { query = "@class.outer", desc = "Around Class" },
-            ["ic"] = { query = "@class.inner", desc = "Inside Class" },
-            ["aa"] = { query = "@parameter.outer", desc = "Around Argument" },
-            ["ia"] = { query = "@parameter.inner", desc = "Inside Argument" },
-            ["ai"] = { query = "@conditional.outer", desc = "Around Conditional" },
-            ["ii"] = { query = "@conditional.inner", desc = "Inside Conditional" },
-            ["al"] = { query = "@loop.outer", desc = "Around Loop" },
-            ["il"] = { query = "@loop.inner", desc = "Inside Loop" },
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true,
-          goto_next_start = {
-            ["]f"] = { query = "@function.outer", desc = "Next Function Start" },
-            ["]a"] = { query = "@parameter.outer", desc = "Next Argument Start" },
-          },
-          goto_next_end = {
-            ["]F"] = { query = "@function.outer", desc = "Next Function End" },
-          },
-          goto_previous_start = {
-            ["[f"] = { query = "@function.outer", desc = "Prev Function Start" },
-            ["[a"] = { query = "@parameter.outer", desc = "Prev Argument Start" },
-          },
-          goto_previous_end = {
-            ["[F"] = { query = "@function.outer", desc = "Prev Function End" },
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = {
-            ["<leader>na"] = { query = "@parameter.inner", desc = "Swap with Next Argument" },
-          },
-          swap_previous = {
-            ["<leader>nA"] = { query = "@parameter.inner", desc = "Swap with Previous Argument" },
-          },
-        },
-      },
+    require('nvim-treesitter-textobjects').setup({
+      select = { lookahead = true },
+      move = { set_jumps = true },
     })
+
+    local sel = require('nvim-treesitter-textobjects.select')
+    local move = require('nvim-treesitter-textobjects.move')
+    local swap = require('nvim-treesitter-textobjects.swap')
+
+    -- Select
+    local select_maps = {
+      ['af'] = '@function.outer',
+      ['if'] = '@function.inner',
+      ['ac'] = '@class.outer',
+      ['ic'] = '@class.inner',
+      ['aa'] = '@parameter.outer',
+      ['ia'] = '@parameter.inner',
+      ['ai'] = '@conditional.outer',
+      ['ii'] = '@conditional.inner',
+      ['al'] = '@loop.outer',
+      ['il'] = '@loop.inner',
+    }
+    for key, query in pairs(select_maps) do
+      vim.keymap.set({ 'x', 'o' }, key, function()
+        sel.select_textobject(query, 'textobjects')
+      end, { desc = query })
+    end
+
+    -- Move
+    local move_maps = {
+      [']f'] = { move.goto_next_start, '@function.outer' },
+      ['[f'] = { move.goto_previous_start, '@function.outer' },
+      [']F'] = { move.goto_next_end, '@function.outer' },
+      ['[F'] = { move.goto_previous_end, '@function.outer' },
+      [']a'] = { move.goto_next_start, '@parameter.outer' },
+      ['[a'] = { move.goto_previous_start, '@parameter.outer' },
+    }
+    for key, val in pairs(move_maps) do
+      vim.keymap.set({ 'n', 'x', 'o' }, key, function()
+        val[1](val[2], 'textobjects')
+      end, { desc = val[2] })
+    end
+
+    -- Swap
+    vim.keymap.set('n', '<leader>na', function()
+      swap.swap_next('@parameter.inner')
+    end, { desc = 'Swap with Next Argument' })
+    vim.keymap.set('n', '<leader>nA', function()
+      swap.swap_previous('@parameter.inner')
+    end, { desc = 'Swap with Previous Argument' })
   end,
 }

@@ -1,15 +1,23 @@
 return {
   'nvim-treesitter/nvim-treesitter',
+  branch = 'main',
+  lazy = false,
   build = ':TSUpdate',
-  opts = {
-    ensure_installed = {
+  config = function()
+    require('nvim-treesitter').setup()
+
+    -- Install parsers (replaces ensure_installed)
+    local wanted = {
       'bash',
       'html',
       'lua',
       'markdown',
       'jsdoc',
+      'ecma',
       'javascript',
       'typescript',
+      'tsx',
+      'jsx',
       'css',
       'scss',
       'go',
@@ -21,27 +29,21 @@ return {
       'sql',
       'graphql',
       'php',
-    },
-    auto_install = true,
-    highlight = {
-      enable = true,
-      use_languagetree = true,
-    },
-    indent = {
-      enable = true,
-    },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = '<CR>',
-        node_incremental = '<CR>',
-        scope_incremental = false,
-        node_decremental = '<BS>',
-      },
-    },
-  },
-  config = function(_, opts)
-    ---@diagnostic disable-next-line: missing-fields
-    require('nvim-treesitter.configs').setup(opts)
+    }
+    local installed = require('nvim-treesitter').get_installed()
+    local missing = vim.tbl_filter(function(p)
+      return not vim.tbl_contains(installed, p)
+    end, wanted)
+    if #missing > 0 then
+      require('nvim-treesitter').install(missing)
+    end
+
+    -- Enable highlight + indent via autocmd (plugin no longer manages these)
+    vim.api.nvim_create_autocmd('FileType', {
+      callback = function()
+        pcall(vim.treesitter.start)
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
+    })
   end,
 }
