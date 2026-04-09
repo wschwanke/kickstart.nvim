@@ -1,4 +1,11 @@
 vim.lsp.set_log_level 'warn'
+
+vim.filetype.add({
+  extension = {
+    cshtml = "razor",
+  },
+})
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!

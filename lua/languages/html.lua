@@ -6,7 +6,6 @@ return {
         html = {
           filetypes = {
             "html",
-            "razor",
           },
         },
       },
