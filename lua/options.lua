@@ -1,4 +1,4 @@
-vim.lsp.set_log_level 'warn'
+vim.lsp.log.set_level('warn')
 
 vim.filetype.add({
   extension = {

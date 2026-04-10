@@ -164,7 +164,7 @@ return {
           if check_capability(client, keys.has) then
             local keymap_opts = Keys.opts(keys)
             keymap_opts.has = nil
-            keymap_opts.buffer = buffer
+            keymap_opts.buf = buffer
             vim.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, keymap_opts)
           end
         end
@@ -221,20 +221,8 @@ return {
         })
       end
 
-      if opts.codelens.enabled and vim.lsp.codelens then
-        vim.api.nvim_create_autocmd("LspAttach", {
-          group = vim.api.nvim_create_augroup("lsp-codelens", { clear = true }),
-          callback = function(event)
-            local client = vim.lsp.get_client_by_id(event.data.client_id)
-            if client and client.server_capabilities.codeLensProvider then
-              vim.lsp.codelens.refresh()
-              vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-                buffer = event.buf,
-                callback = vim.lsp.codelens.refresh,
-              })
-            end
-          end,
-        })
+      if opts.codelens.enabled then
+        vim.lsp.codelens.enable(true)
       end
 
       if opts.servers["*"] then

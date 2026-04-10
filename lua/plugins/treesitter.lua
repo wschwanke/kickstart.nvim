@@ -31,6 +31,9 @@ return {
       'php',
       'razor',
       'c_sharp',
+      'elixir',
+      'heex',
+      'eex',
     }
     local installed = require('nvim-treesitter').get_installed()
     local missing = vim.tbl_filter(function(p)
