@@ -53,7 +53,7 @@ return {
           exclude = {},
         },
         codelens = {
-          enabled = true,
+          enabled = false,
         },
         folds = {
           enabled = false,
