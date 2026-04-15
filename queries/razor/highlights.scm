@@ -1,4 +1,9 @@
-; extends
+;; inherits: c_sharp
+
+[
+  (razor_comment)
+  (html_comment)
+] @comment @spell (#set! "priority" 200)
 
 [
   "at_page"
@@ -16,42 +21,38 @@
   "at_block"
   "at_at_escape"
   "at_colon_transition"
-] @constant.macro (#set! priority 110)
+] @constant.macro (#set! "priority" 200)
 
 [
   "at_lock"
   "at_section"
-] @keyword (#set! priority 110)
+] @keyword (#set! "priority" 200)
 
 [
   "at_if"
   "at_switch"
-] @keyword.conditional (#set! priority 110)
+] @keyword.conditional (#set! "priority" 200)
 
 [
   "at_for"
   "at_foreach"
   "at_while"
   "at_do"
-] @keyword.repeat (#set! priority 110)
+] @keyword.repeat (#set! "priority" 200)
 
 [
   "at_try"
   "catch"
   "finally"
-] @keyword.exception (#set! priority 110)
+] @keyword.exception (#set! "priority" 200)
 
 [
   "at_implicit"
   "at_explicit"
-] @variable (#set! priority 110)
+] @variable (#set! "priority" 200)
 
-"at_await" @keyword.coroutine (#set! priority 110)
+"at_await" @keyword.coroutine (#set! "priority" 200)
 
-(razor_rendermode) @property (#set! priority 110)
+(razor_rendermode) @property (#set! "priority" 200)
 
-(razor_attribute_name) @function (#set! priority 110)
-
-[
-  (razor_comment)
-] @comment (#set! priority 110)
+(razor_attribute_name) @function (#set! "priority" 200)

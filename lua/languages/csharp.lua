@@ -27,6 +27,11 @@ return {
             ["csharp|symbol_search"] = {
               dotnet_search_reference_assemblies = true,
             },
+            razor = {
+              language_server = {
+                cohosting_enabled = false,
+              },
+            },
           },
         },
       },

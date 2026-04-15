@@ -26,6 +26,15 @@ return {
           if not pcall(vim.treesitter.start, ev.buf) then
             return
           end
+
+          -- Razor's directive highlights in queries/razor/highlights.scm lose to
+          -- the injected html parser's @none capture on same-pattern priority.
+          -- Drop @none from html so priority 200 razor captures can actually show.
+          if ev.match == "razor" then
+            local q = vim.treesitter.query.get("html", "highlights")
+            if q and q.query then q.query:disable_capture("none") end
+          end
+
           vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
           vim.wo[0][0].foldmethod = "expr"
           vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
