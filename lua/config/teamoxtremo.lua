@@ -8,6 +8,10 @@ M.util = setmetatable({}, {
   end,
 })
 
+for k, v in pairs(require("config.settings")) do
+  M[k] = v
+end
+
 _G.TeamoXtremo = M
 
 return M

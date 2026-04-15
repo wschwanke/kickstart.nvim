@@ -1,6 +1,6 @@
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -13,16 +13,18 @@ end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
 
-require 'config.teamoxtremo'
-require 'config.autocmds'
-require 'config.keymaps'
-require 'config.options'
+require("config.teamoxtremo")
+require("config.autocmds")
+require("config.keymaps")
+require("config.options")
 
-require('lazy').setup({
-  { import = 'config/themes' },
-  { import = 'plugins' },
+require("lazy").setup({
+  { import = "config/themes" },
+  { import = "plugins" },
+  { import = "languages" },
+  { import = "formatting" },
 }, {
-checker = {
+  checker = {
     enabled = true, -- check for plugin updates periodically
     notify = true, -- notify on update
   }, -- automatically check for plugin updates
@@ -46,6 +48,4 @@ checker = {
   },
 })
 
--- Pick the active colorscheme. Change this one line to switch.
--- The theme must be installed as a plugin spec in lua/config/themes.lua.
-vim.cmd.colorscheme("gruvbox-material")
+vim.cmd.colorscheme(TeamoXtremo.theme)

@@ -4,6 +4,7 @@ return {
     name = 'catppuccin',
     lazy = false,
     priority = 1000,
+    cond = function() return vim.startswith(TeamoXtremo.theme, "catppuccin") end,
     opts = {
       flavour = 'mocha',
       integrations = {
@@ -20,11 +21,13 @@ return {
     "scottmckendry/cyberdream.nvim",
     lazy = false,
     priority = 1000,
+    cond = function() return TeamoXtremo.theme == "cyberdream" end,
   },
   {
     "oldjobobo/retro-82.nvim",
     lazy = false,
     priority = 1000,
+    cond = function() return TeamoXtremo.theme == "retro82" end,
     main = "retro82",
     opts = {
       transparent = false,
@@ -35,6 +38,7 @@ return {
     "sainnhe/gruvbox-material",
     lazy = false,
     priority = 1000,
+    cond = function() return TeamoXtremo.theme == "gruvbox-material" end,
     init = function()
       vim.g.gruvbox_material_background = "hard"
       vim.g.gruvbox_material_foreground = "material"
@@ -44,5 +48,6 @@ return {
     'nyoom-engineering/oxocarbon.nvim',
     lazy = false,
     priority = 1000,
+    cond = function() return TeamoXtremo.theme == "oxocarbon" end,
   },
 }

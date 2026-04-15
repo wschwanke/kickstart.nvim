@@ -7,31 +7,7 @@ return {
     config = function()
       local TS = require("nvim-treesitter")
 
-      local ensure_installed = {
-        "bash",
-        "c",
-        "diff",
-        "html",
-        "javascript",
-        "jsdoc",
-        "json",
-        "lua",
-        "luadoc",
-        "luap",
-        "markdown",
-        "markdown_inline",
-        "printf",
-        "python",
-        "query",
-        "regex",
-        "toml",
-        "tsx",
-        "typescript",
-        "vim",
-        "vimdoc",
-        "xml",
-        "yaml",
-      }
+      local ensure_installed = TeamoXtremo.treesitter
 
       local installed = TS.get_installed("parsers") or {}
       local to_install = vim.tbl_filter(function(lang)

@@ -5,10 +5,6 @@ return {
       servers = {
         roslyn = {
           filetypes = { "cs", "razor" },
-          root_dir = function(fname)
-            local util = require("lspconfig.util")
-            return util.root_pattern("*.sln", "*.csproj", "Directory.Build.props")(fname)
-          end,
           settings = {
             ["csharp|inlay_hints"] = {
               csharp_enable_inlay_hints_for_implicit_object_creation = true,
@@ -35,11 +31,8 @@ return {
         },
       },
       setup = {
-        roslyn = function(_, opts)
-          require("roslyn").setup({
-            config = opts,
-            filewatching = true,
-          })
+        roslyn = function(name, server)
+          vim.lsp.config(name, server)
           return true
         end,
       },
@@ -48,5 +41,6 @@ return {
   {
     "seblyng/roslyn.nvim",
     ft = { "cs", "razor" },
+    opts = {},
   },
 }

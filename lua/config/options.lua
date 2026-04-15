@@ -2,6 +2,12 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+vim.filetype.add({
+  extension = {
+    cshtml = "razor",
+  },
+})
+
 -- LazyVim auto format
 -- vim.g.autoformat = true
 
@@ -32,6 +38,7 @@ vim.g.netrw_winsize = 25
 
 local opt = vim.opt
 
+opt.guicursor = ""
 opt.autowrite = true -- Enable auto write
 -- only set clipboard if not in ssh, to make sure the OSC 52
 -- integration works automatically.
@@ -86,10 +93,12 @@ opt.splitright = true -- Put new windows right of current
 -- opt.statuscolumn = [[%!v:lua.LazyVim.statuscolumn()]]
 opt.tabstop = 2 -- Number of spaces tabs count for
 opt.termguicolors = true -- True color support
-opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
+opt.timeoutlen = vim.g.vscode and 800 or 200 -- Lower than default (1000) to quickly trigger which-key
 opt.undofile = true
 opt.undolevels = 10000
-opt.updatetime = 200 -- Save swap file and trigger CursorHold
+opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
+opt.undofile = true
+opt.updatetime = 100 -- Save swap file and trigger CursorHold
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
