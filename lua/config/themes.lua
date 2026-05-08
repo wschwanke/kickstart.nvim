@@ -1,12 +1,14 @@
 return {
   {
-    'catppuccin/nvim',
-    name = 'catppuccin',
+    "catppuccin/nvim",
+    name = "catppuccin",
     lazy = false,
     priority = 1000,
-    cond = function() return vim.startswith(TeamoXtremo.theme, "catppuccin") end,
+    cond = function()
+      return vim.startswith(TeamoXtremo.theme, "catppuccin")
+    end,
     opts = {
-      flavour = 'mocha',
+      flavour = "mocha",
       integrations = {
         blink_cmp = true,
         treesitter = true,
@@ -21,13 +23,17 @@ return {
     "scottmckendry/cyberdream.nvim",
     lazy = false,
     priority = 1000,
-    cond = function() return TeamoXtremo.theme == "cyberdream" end,
+    cond = function()
+      return TeamoXtremo.theme == "cyberdream"
+    end,
   },
   {
     "oldjobobo/retro-82.nvim",
     lazy = false,
     priority = 1000,
-    cond = function() return TeamoXtremo.theme == "retro82" end,
+    cond = function()
+      return TeamoXtremo.theme == "retro82"
+    end,
     main = "retro82",
     opts = {
       transparent = false,
@@ -38,16 +44,37 @@ return {
     "sainnhe/gruvbox-material",
     lazy = false,
     priority = 1000,
-    cond = function() return TeamoXtremo.theme == "gruvbox-material" end,
+    cond = function()
+      return TeamoXtremo.theme == "gruvbox-material"
+    end,
     init = function()
       vim.g.gruvbox_material_background = "hard"
       vim.g.gruvbox_material_foreground = "material"
     end,
   },
   {
-    'nyoom-engineering/oxocarbon.nvim',
+    "nyoom-engineering/oxocarbon.nvim",
     lazy = false,
     priority = 1000,
-    cond = function() return TeamoXtremo.theme == "oxocarbon" end,
+    cond = function()
+      return TeamoXtremo.theme == "oxocarbon"
+    end,
+  },
+  {
+    "neanias/everforest-nvim",
+    lazy = false,
+    priority = 1000,
+    cond = function()
+      return TeamoXtremo.theme == "everforest"
+    end,
+    config = function()
+      require("everforest").setup({
+        background = "medium",
+        inlay_hinets_background = "dimmed",
+        on_highlights = function(hl, palette)
+          hl.CurrentWord = { bg = palette.bg3 }
+        end,
+      })
+    end,
   },
 }

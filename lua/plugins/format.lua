@@ -15,7 +15,12 @@ return {
       {
         "<leader>F",
         function()
-          require("conform").format({ async = false, lsp_format = "fallback", formatters = { "injected" }, timeout_ms = 10000 })
+          require("conform").format({
+            async = false,
+            lsp_format = "fallback",
+            formatters = { "injected" },
+            timeout_ms = 10000,
+          })
         end,
         mode = { "n", "x" },
         desc = "[F]ormat Injected Langs",
@@ -34,6 +39,7 @@ return {
         lua = { "stylua" },
         sh = { "shfmt" },
         cs = { "csharpier" },
+        odin = { "odinfmt" },
       },
       formatters = {
         injected = { options = { ignore_errors = true } },

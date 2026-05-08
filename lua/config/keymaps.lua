@@ -109,7 +109,7 @@ local diagnostic_goto = function(next, severity)
   end
 end
 
-map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+-- map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
 map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
@@ -122,6 +122,11 @@ map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 -- highlights under cursor
 map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
 map("n", "<leader>uI", function() vim.treesitter.inspect_tree() vim.api.nvim_input("I") end, { desc = "Inspect Tree" })
+
+-- cloak
+map("n", "<leader>Ce", "<cmd>CloakEnable<cr>", { desc = "Cloak Enable" })
+map("n", "<leader>Cd", "<cmd>CloakDisable<cr>", { desc = "Cloak Disable" })
+map("n", "<leader>Ct", "<cmd>CloakToggle<cr>", { desc = "Cloak Toggle" })
 
 -- windows
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })

@@ -35,7 +35,10 @@ return {
             if q and q.query then q.query:disable_capture("none") end
           end
 
-          vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          local ok, has_indents = pcall(vim.treesitter.query.get, ev.match, "indents")
+          if ok and has_indents then
+            vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
           vim.wo[0][0].foldmethod = "expr"
           vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
         end,

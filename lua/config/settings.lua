@@ -1,7 +1,7 @@
 local M = {}
 
 -- Must match a plugin spec in lua/config/themes.lua.
-M.theme = "gruvbox-material"
+M.theme = "everforest"
 
 M.treesitter = {
   "bash",
@@ -10,6 +10,7 @@ M.treesitter = {
   "css",
   "diff",
   "dockerfile",
+  "ecma",
   "eex",
   "elixir",
   "git_rebase",
@@ -24,13 +25,15 @@ M.treesitter = {
   "javascript",
   "jsdoc",
   "json",
+  "jsx",
   "lua",
   "luadoc",
   "luap",
   "markdown",
   "markdown_inline",
-  "prisma",
+  "odin",
   "printf",
+  "prisma",
   "python",
   "query",
   "razor",
@@ -50,14 +53,14 @@ M.treesitter = {
 M.icons = {
   diagnostics = {
     Error = "󰅚 ",
-    Warn  = "󰀪 ",
-    Info  = "󰋽 ",
-    Hint  = "󰌶 ",
+    Warn = "󰀪 ",
+    Info = "󰋽 ",
+    Hint = "󰌶 ",
   },
   git = {
-    added    = " ",
+    added = " ",
     modified = " ",
-    removed  = " ",
+    removed = " ",
   },
 }
 
