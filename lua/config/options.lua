@@ -5,6 +5,10 @@ vim.g.maplocalleader = "\\"
 vim.filetype.add({
   extension = {
     cshtml = "razor",
+    hlsl = "hlsl",
+    hlsli = "hlsl",
+    fx = "hlsl",
+    fxh = "hlsl",
   },
 })
 
