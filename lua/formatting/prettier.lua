@@ -2,6 +2,7 @@
 local M = {}
 
 local supported = {
+  "astro",
   "css",
   "graphql",
   "handlebars",

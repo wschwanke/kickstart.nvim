@@ -4,6 +4,7 @@ local M = {}
 M.theme = "everforest"
 
 M.treesitter = {
+  "astro",
   "bash",
   "c",
   "c_sharp",
