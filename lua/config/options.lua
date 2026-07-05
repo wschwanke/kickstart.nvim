@@ -100,7 +100,9 @@ opt.termguicolors = true -- True color support
 opt.timeoutlen = vim.g.vscode and 800 or 200 -- Lower than default (1000) to quickly trigger which-key
 opt.undofile = true
 opt.undolevels = 10000
-opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
+local undodir = vim.fn.expand('~/.vim/undodir')
+vim.fn.mkdir(undodir, 'p') -- Neovim doesn't auto-create custom undodirs
+opt.undodir = undodir
 opt.undofile = true
 opt.updatetime = 100 -- Save swap file and trigger CursorHold
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode

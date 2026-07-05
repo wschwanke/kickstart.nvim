@@ -5,7 +5,14 @@ return {
       servers = {
         zls = {
           filetypes = { 'zig', 'zon' },
-          cmd = { '/home/wschwanke/apps/zls/zig-out/bin/zls' },
+          -- Prefer the local zls build, fall back to zls on PATH
+          cmd = (function()
+            local local_zls = vim.fn.expand('~/apps/zls/zig-out/bin/zls')
+            if vim.fn.executable(local_zls) == 1 then
+              return { local_zls }
+            end
+            return { 'zls' }
+          end)(),
           settings = {
             zls = {
               semantic_tokens = 'partial',
