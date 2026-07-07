@@ -69,8 +69,32 @@ return {
     end,
     config = function()
       require("everforest").setup({
+        -- Background hardness: "soft" | "medium" | "hard"
         background = "medium",
-        inlay_hinets_background = "dimmed",
+        -- Transparency: 0 = opaque, 1 = transparent, 2 = more UI elements transparent
+        transparent_background_level = 0,
+        -- Italic keywords and more
+        italics = true,
+        -- Comments are italic by default; set true to make them NOT italic
+        disable_italic_comments = false,
+        -- Sign column background: "none" | "grey"
+        sign_column_background = "grey",
+        -- Contrast of line numbers, indent lines, etc.: "low" | "high"
+        ui_contrast = "high",
+        -- Dim inactive windows (Neovim only)
+        dim_inactive_windows = false,
+        -- Also highlight the background of diagnostic error/warn/info/hint text
+        diagnostic_text_highlight = true,
+        -- Diagnostic virtual text colour: "grey" | "coloured"
+        diagnostic_virtual_text = "coloured",
+        -- Highlight diagnostic error/warn/info/hint lines
+        diagnostic_line_highlight = true,
+        -- Colour the foreground of spelling errors (vs. just coloured undercurls)
+        spell_foreground = false,
+        -- Show the EndOfBuffer (~) highlight
+        show_eob = true,
+        -- Floating window style: "bright" (lighter than Normal) | "dim" (darker)
+        float_style = "bright",
         on_highlights = function(hl, palette)
           hl.CurrentWord = { bg = palette.bg3 }
         end,
