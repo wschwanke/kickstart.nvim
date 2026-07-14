@@ -4,7 +4,7 @@ local map = vim.keymap.set
 --  See `:help vim.keymap.set()`
 map('n', '<leader>b', vim.cmd.Ex, { desc = 'Open File [B]rowser' })
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
-map('n', '<Esc>', '<cmd>nohlsearch<CR>')
+map('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear Search Highlight' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -68,12 +68,9 @@ map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result
 -- save file
 map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
 
---keywordprg
-map("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
-
 -- better indenting
-map("x", "<", "<gv")
-map("x", ">", ">gv")
+map("x", "<", "<gv", { desc = "Indent Left (keep selection)" })
+map("x", ">", ">gv", { desc = "Indent Right (keep selection)" })
 
 -- commenting
 map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
@@ -85,7 +82,7 @@ map("n", "<leader>xl", function()
   if not success and err then
     vim.notify(err, vim.log.levels.ERROR)
   end
-end, { desc = "Location List" })
+end, { desc = "Lists: Toggle [L]ocation List" })
 
 -- quickfix list
 map("n", "<leader>xq", function()
@@ -93,7 +90,7 @@ map("n", "<leader>xq", function()
   if not success and err then
     vim.notify(err, vim.log.levels.ERROR)
   end
-end, { desc = "Quickfix List" })
+end, { desc = "Lists: Toggle [Q]uickfix List" })
 
 map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
@@ -120,16 +117,12 @@ map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 -- stylua: ignore start
 
 -- highlights under cursor
-map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
-map("n", "<leader>uI", function() vim.treesitter.inspect_tree() vim.api.nvim_input("I") end, { desc = "Inspect Tree" })
+map("n", "<leader>ui", vim.show_pos, { desc = "UI: [I]nspect Position" })
+map("n", "<leader>uI", function() vim.treesitter.inspect_tree() vim.api.nvim_input("I") end, { desc = "UI: [I]nspect Tree" })
 
 -- cloak
-map("n", "<leader>Ce", "<cmd>CloakEnable<cr>", { desc = "Cloak Enable" })
-map("n", "<leader>Cd", "<cmd>CloakDisable<cr>", { desc = "Cloak Disable" })
-map("n", "<leader>Ct", "<cmd>CloakToggle<cr>", { desc = "Cloak Toggle" })
+map("n", "<leader>Ce", "<cmd>CloakEnable<cr>", { desc = "Cloak: [E]nable" })
+map("n", "<leader>Cd", "<cmd>CloakDisable<cr>", { desc = "Cloak: [D]isable" })
+map("n", "<leader>Ct", "<cmd>CloakToggle<cr>", { desc = "Cloak: [T]oggle" })
 
--- windows
-map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
-map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
-map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
 

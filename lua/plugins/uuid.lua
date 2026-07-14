@@ -9,7 +9,7 @@ return {
         vim.api.nvim_put({ id }, 'c', false, true)
       end
 
-      vim.keymap.set('n', '<leader>gu', insert_uuid, { desc = '[G]enerate [U]UID v4' })
+      vim.keymap.set('n', '<leader>gu', insert_uuid, { desc = 'Generate: [U]UID v4' })
       vim.keymap.set('i', '<C-g>', insert_uuid, { desc = 'Insert UUID v4' })
     end,
   },

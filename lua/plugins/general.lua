@@ -53,14 +53,16 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>l',  group = '[L]SP',       mode = { 'n', 'x' } },
+        { '<leader>l',  group = '[L]SP',              mode = { 'n', 'x' } },
         { '<leader>s',  group = '[S]earch' },
-        { '<leader>t',  group = '[T]est' },
-        { '<leader>h',  group = '[H]arpoon',   mode = { 'n', 'v' } },
-        { '<leader>g',  group = '[G]enerate' },
-        -- { '<leader>gh', group = 'Git [H]unks', mode = { 'n', 'x' } },
-        { '<leader>u',  group = '[U]ndotree' },
-        { '<leader>n',  group = 'Swap [N]ode' },
+        { '<leader>so', group = 'Search [O]rg' },
+        { '<leader>o',  group = '[O]rg' },
+        { '<leader>od', group = 'Org [D]ate' },
+        { '<leader>h',  group = '[H]arpoon',          mode = { 'n', 'v' } },
+        { '<leader>g',  group = '[G]it / [G]enerate' },
+        { '<leader>u',  group = '[U]ndotree / [U]I' },
+        { '<leader>C',  group = '[C]loak' },
+        { '<leader>x',  group = 'Quickfi[x] / Lists' },
       },
     },
   },

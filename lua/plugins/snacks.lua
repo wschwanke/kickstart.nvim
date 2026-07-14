@@ -33,42 +33,42 @@ return {
       function()
         Snacks.picker.git_branches()
       end,
-      desc = "Git Branches",
+      desc = "Git: [B]ranches",
     },
     {
       "<leader>gl",
       function()
         Snacks.picker.git_log()
       end,
-      desc = "Git Log",
+      desc = "Git: [L]og",
     },
     {
       "<leader>gL",
       function()
         Snacks.picker.git_log_line()
       end,
-      desc = "Git Log Line",
+      desc = "Git: [L]og Line",
     },
     {
       "<leader>gs",
       function()
         Snacks.picker.git_status()
       end,
-      desc = "Git Status",
+      desc = "Git: [S]tatus",
     },
     {
       "<leader>gd",
       function()
         Snacks.picker.git_diff()
       end,
-      desc = "Git Diff (Hunks)",
+      desc = "Git: [D]iff (Hunks)",
     },
     {
       "<leader>gf",
       function()
         Snacks.picker.git_log_file()
       end,
-      desc = "Git Log File",
+      desc = "Git: Log [F]ile",
     },
     -- find
     {
@@ -76,63 +76,63 @@ return {
       function()
         Snacks.picker.buffers()
       end,
-      desc = "Buffers",
+      desc = "Search: [B]uffers",
     },
     {
       "<leader>sn",
       function()
         Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
       end,
-      desc = "Find Config File",
+      desc = "Search: [N]vim Config Files",
     },
     {
       "<leader>sf",
       function()
         Snacks.picker.files()
       end,
-      desc = "Find Files",
+      desc = "Search: [F]iles",
     },
     {
       "<leader>sG",
       function()
         Snacks.picker.git_files()
       end,
-      desc = "Find Git Files",
+      desc = "Search: [G]it Files",
     },
     {
       "<leader>sr",
       function()
         Snacks.picker.recent()
       end,
-      desc = "Recent",
+      desc = "Search: [R]ecent Files",
     },
     {
       "<leader>sl",
       function()
         Snacks.picker.lines()
       end,
-      desc = "Buffer Lines",
+      desc = "Search: Buffer [L]ines",
     },
     {
       "<leader>sB",
       function()
         Snacks.picker.grep_buffers()
       end,
-      desc = "Grep Open Buffers",
+      desc = "Search: Grep Open [B]uffers",
     },
     {
       "<leader>sg",
       function()
         Snacks.picker.grep()
       end,
-      desc = "Grep",
+      desc = "Search: [G]rep",
     },
     {
       "<leader>sw",
       function()
         Snacks.picker.grep_word()
       end,
-      desc = "Visual selection or word",
+      desc = "Search: Grep [W]ord/Selection",
       mode = { "n", "x" },
     },
     -- search
@@ -141,98 +141,98 @@ return {
       function()
         Snacks.picker.registers()
       end,
-      desc = "Registers",
+      desc = "Search: Registers",
     },
     {
       "<leader>s/",
       function()
         Snacks.picker.search_history()
       end,
-      desc = "Search History",
+      desc = "Search: History",
     },
     {
       "<leader>sa",
       function()
         Snacks.picker.autocmds()
       end,
-      desc = "Autocmds",
+      desc = "Search: [A]utocmds",
     },
     {
       "<leader>sC",
       function()
         Snacks.picker.commands()
       end,
-      desc = "Commands",
+      desc = "Search: [C]ommands",
     },
     {
       "<leader>sd",
       function()
         Snacks.picker.diagnostics()
       end,
-      desc = "Diagnostics",
+      desc = "Search: [D]iagnostics",
     },
     {
       "<leader>sD",
       function()
         Snacks.picker.diagnostics_buffer()
       end,
-      desc = "Buffer Diagnostics",
+      desc = "Search: Buffer [D]iagnostics",
     },
     {
       "<leader>sh",
       function()
         Snacks.picker.help()
       end,
-      desc = "Help Pages",
+      desc = "Search: [H]elp Pages",
     },
     {
       "<leader>sH",
       function()
         Snacks.picker.highlights()
       end,
-      desc = "Highlights",
+      desc = "Search: [H]ighlights",
     },
     {
       "<leader>si",
       function()
         Snacks.picker.icons()
       end,
-      desc = "Icons",
+      desc = "Search: [I]cons",
     },
     {
       "<leader>sj",
       function()
         Snacks.picker.jumps()
       end,
-      desc = "Jumps",
+      desc = "Search: [J]umps",
     },
     {
       "<leader>sk",
       function()
         Snacks.picker.keymaps()
       end,
-      desc = "Keymaps",
+      desc = "Search: [K]eymaps",
     },
     {
       "<leader>sm",
       function()
         Snacks.picker.marks()
       end,
-      desc = "Marks",
+      desc = "Search: [M]arks",
     },
     {
       "<leader>sM",
       function()
         Snacks.picker.man()
       end,
-      desc = "Man Pages",
+      desc = "Search: [M]an Pages",
     },
     {
       "<leader>sq",
       function()
         Snacks.picker.qflist()
       end,
-      desc = "Quickfix List",
+      desc = "Search: [Q]uickfix List",
     },
     -- LS
     {
@@ -290,14 +290,14 @@ return {
       function()
         Snacks.picker.lsp_symbols()
       end,
-      desc = "LSP Symbols",
+      desc = "Search: LSP [S]ymbols",
     },
     {
       "<leader>sS",
       function()
         Snacks.picker.lsp_workspace_symbols()
       end,
-      desc = "LSP Workspace Symbols",
+      desc = "Search: LSP Workspace [S]ymbols",
     },
   },
 }
