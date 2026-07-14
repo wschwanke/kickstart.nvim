@@ -80,7 +80,7 @@ return {
         -- Sign column background: "none" | "grey"
         sign_column_background = "grey",
         -- Contrast of line numbers, indent lines, etc.: "low" | "high"
-        ui_contrast = "high",
+        ui_contrast = "low",
         -- Dim inactive windows (Neovim only)
         dim_inactive_windows = false,
         -- Also highlight the background of diagnostic error/warn/info/hint text

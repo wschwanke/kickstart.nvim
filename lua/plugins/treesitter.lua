@@ -32,7 +32,9 @@ return {
           -- Drop @none from html so priority 200 razor captures can actually show.
           if ev.match == "razor" then
             local q = vim.treesitter.query.get("html", "highlights")
-            if q and q.query then q.query:disable_capture("none") end
+            if q and q.query then
+              q.query:disable_capture("none")
+            end
           end
 
           local ok, has_indents = pcall(vim.treesitter.query.get, ev.match, "indents")

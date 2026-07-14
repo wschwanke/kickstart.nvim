@@ -30,13 +30,13 @@ return {
       "nvim-telescope/telescope.nvim",
     },
     config = function()
-      require("telescope").load_extension("orgmode")
+      local tom = require("telescope-orgmode")
+      tom.setup({ adapter = "snacks" })
 
-      local ext = require("telescope").extensions.orgmode
-      vim.keymap.set("n", "<leader>sh", ext.search_headings, { desc = "Org headlines" })
-      vim.keymap.set("n", "<leader>st", ext.search_tags, { desc = "Org tags" })
-      -- vim.keymap.set("n", "<leader>r", ext.refile_heading, { desc = "Org refile" })
-      -- vim.keymap.set("n", "<leader>li", ext.insert_link, { desc = "Org insert link" })
+      vim.keymap.set("n", "<leader>osh", tom.search_headings, { desc = "[O]rg Headlines" })
+      vim.keymap.set("n", "<leader>ost", tom.search_tags, { desc = "[O]rg Tags" })
+      vim.keymap.set("n", "<leader>or", tom.refile_heading, { desc = "[O]rg Refile" })
+      vim.keymap.set("n", "<leader>oli", tom.insert_link, { desc = "[O]rg [L]ink [I]nsert" })
     end,
   },
 }

@@ -8,7 +8,7 @@
 -- body still auto-indents on Enter/o (via formatoptions r/o) but without the
 -- "*". Treesitter's indentexpr won't indent inside a comment node, so this
 -- leader is what restores the indentation.
-vim.opt_local.comments = "s1:/*,mb: ,ex:*/,://"
+-- vim.opt_local.comments = "s1:/*,mb: ,ex:*/,://"
 
 -- Odin uses real tabs (odinfmt.json: tabs=true, tabs_width=4). The global
 -- expandtab/tabstop=2 makes odinfmt's tabs render 2 wide and typed indents

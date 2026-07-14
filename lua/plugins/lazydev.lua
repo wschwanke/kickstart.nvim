@@ -8,6 +8,10 @@ return {
       library = {
         -- Load luvit types when the `vim.uv` word is found
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        -- Load snacks.nvim types when the `Snacks` global is found
+        { path = 'snacks.nvim', words = { 'Snacks' } },
+        -- Load lazy.nvim types when the `LazySpec` annotation is found
+        { path = 'lazy.nvim', words = { 'LazySpec' } },
       },
     },
   },

@@ -13,7 +13,7 @@ return {
     version = "1.*",
     dependencies = {
       "rafamadriz/friendly-snippets",
-      "moyiz/blink-emoji.nvim", -- Option A for emoji
+      "moyiz/blink-emoji.nvim",
       "onsails/lspkind-nvim",
     },
 
@@ -127,9 +127,7 @@ return {
                       icon = dev_icon
                     end
                   else
-                    icon = require("lspkind").symbolic(ctx.kind, {
-                      mode = "symbol",
-                    })
+                    icon = require("lspkind").symbolic(ctx.kind)
                   end
 
                   return icon .. ctx.icon_gap
@@ -159,13 +157,18 @@ return {
       },
 
       sources = {
-        -- -- adding any nvim-cmp sources here will enable them
-        -- -- with blink.compat
-        -- compat = {},
+        per_filetype = {
+          org = { "orgmode" },
+        },
+        providers = {
+          orgmode = {
+            name = "Orgmode",
+            module = "orgmode.org.autocompletion.blink",
+            fallbacks = { "buffer" },
+          },
+        },
         default = { "lsp", "path", "snippets", "buffer" },
       },
-
-      -- providers = {},
 
       cmdline = {
         enabled = true,
@@ -177,7 +180,7 @@ return {
         completion = {
           list = { selection = { preselect = false } },
           menu = {
-            auto_show = function(ctx)
+            auto_show = function()
               return vim.fn.getcmdtype() == ":"
             end,
           },
@@ -185,24 +188,5 @@ return {
         },
       },
     },
-    -- ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
-    -- config = function(_, opts)
-    --   -- setup compat sources
-    --   local enabled = opts.sources.default
-    --   for _, source in ipairs(opts.sources.compat or {}) do
-    --     opts.sources.providers[source] = vim.tbl_deep_extend(
-    --       'force',
-    --       { name = source, module = 'blink.compat.source' },
-    --       opts.sources.providers[source] or {}
-    --     )
-    --     if type(enabled) == 'table' and not vim.tbl_contains(enabled, source) then
-    --       table.insert(enabled, source)
-    --     end
-    --   end
-    --
-    --   -- Unset custom prop to pass blink.cmp validation
-    --   opts.sources.compat = nil
-    --   require('blink.cmp').setup(opts)
-    -- end
   },
 }
