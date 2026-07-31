@@ -40,6 +40,7 @@ return {
         sh = { "shfmt" },
         cs = { "csharpier" },
         odin = { "odinfmt" },
+        gleam = { "gleam" },
       },
       formatters = {
         injected = { options = { ignore_errors = true } },

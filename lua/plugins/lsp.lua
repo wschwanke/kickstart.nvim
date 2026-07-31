@@ -108,6 +108,11 @@ return {
       local ensure_installed = {}
       for name, server in pairs(opts.servers) do
         if server.enabled ~= false then
+          -- Servers bundled with their compiler/toolchain (e.g. `gleam lsp`) have
+          -- no Mason package; mason-tool-installer errors on unknown names.
+          local use_mason = server.mason ~= false
+          server.mason = nil
+
           server.capabilities = vim.tbl_deep_extend("force", capabilities, server.capabilities or {})
 
           -- A setup[name] hook either mutates `server` and returns nothing (we

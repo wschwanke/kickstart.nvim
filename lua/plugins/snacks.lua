@@ -4,6 +4,7 @@ return {
   opts = {
     picker = {},
     scratch = {},
+    image = {},
   },
   keys = {
     {
