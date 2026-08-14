@@ -10,8 +10,9 @@ return {
       require("orgmode").setup({
         org_todo_keywords = { "TODO(t)", "NEXT(n)", "WAITING(w)", "|", "DONE(d)", "CANCELLED(c)" },
         org_agenda_files = "~/.org/**/*",
+        org_blank_before_new_entry = { heading = false, plain_list_item = false },
         org_default_notes_file = "~/.org/notes.org",
-        org_archive_location = "~/.org/archive.org",
+        org_archive_location = "~/.org/archive.org::",
         org_capture_templates = {
           t = { description = "Task", template = "* TODO %?\n  %u" },
         },
@@ -35,14 +36,21 @@ return {
             org_move_subtree_up = { "<leader>oK", desc = "Org: Move Subtree Up" },
             org_move_subtree_down = { "<leader>oJ", desc = "Org: Move Subtree Down" },
             org_toggle_checkbox = { "<C-Space>", desc = "Org: Toggle Checkbox" },
-            org_meta_return = { "<leader><CR>", desc = "Org: Meta Return (New Heading/Item)" },
-            org_return = { "<CR>", desc = "Org: Smart Return" },
+            org_meta_return = { "<leader><CR>", "<C-CR>", desc = "Org: Meta Return (New Heading/Item)" },
+            -- org_return = { "<CR>", desc = "Org: Smart Return" },
+            org_return = false,
             org_cycle = { "<TAB>", desc = "Org: Cycle Fold" },
             org_global_cycle = { "<S-TAB>", desc = "Org: Cycle Fold (Global)" },
             org_do_promote = { "<<", desc = "Org: Promote Headline" },
             org_do_demote = { ">>", desc = "Org: Demote Headline" },
             org_promote_subtree = { "<s", desc = "Org: Promote Subtree" },
             org_demote_subtree = { ">s", desc = "Org: Demote Subtree" },
+            -- headline motion
+            org_next_visible_heading = { "}", desc = "Org: Next Heading" },
+            org_previous_visible_heading = { "{", desc = "Org: Previous Heading" },
+            org_forward_heading_same_level = { "]]", desc = "Org: Next Heading (Same Level)" },
+            org_backward_heading_same_level = { "[[", desc = "Org: Previous Heading (Same Level)" },
+            outline_up_heading = { "g{", desc = "Org: Parent Heading" },
             -- dates & scheduling
             org_schedule = { "<leader>ods", desc = "Org Date: [S]chedule" },
             org_deadline = { "<leader>odd", desc = "Org Date: [D]eadline" },
@@ -61,6 +69,9 @@ return {
             org_archive_subtree = { "<leader>ox", desc = "Org: Archive Subtree" },
             org_toggle_archive_tag = { "<leader>oX", desc = "Org: Toggle ARCHIVE Tag" },
             org_show_help = { "g?", desc = "Org: Show Help" },
+            -- export (needs emacs and/or pandoc on $PATH)
+            -- NOTE: <leader>oe is taken by the Explore mapping below, so this is <leader>oE
+            org_export = { "<leader>oE", desc = "Org: [E]xport" },
             -- everything else: explicitly disabled
             org_refile = false, -- replaced by telescope-orgmode <leader>or
             org_insert_link = false, -- replaced by telescope-orgmode <leader>ol
@@ -69,12 +80,6 @@ return {
             org_insert_heading_respect_content = false,
             org_insert_todo_heading = false,
             org_insert_todo_heading_respect_content = false,
-            org_export = false,
-            org_next_visible_heading = false,
-            org_previous_visible_heading = false,
-            org_forward_heading_same_level = false,
-            org_backward_heading_same_level = false,
-            outline_up_heading = false,
             org_toggle_timestamp_type = false,
             org_clock_in = false,
             org_clock_out = false,
@@ -84,6 +89,23 @@ return {
             org_babel_tangle = false,
           },
         },
+      })
+
+      -- Insert-mode meta return. The orgmode mappings table is normal-mode only
+      -- (except org_return), so this has to be a buffer-local keymap.
+      -- <S-CR> is included as a fallback: if the terminal stack swallows <C-CR>,
+      -- Shift+Enter is the better-supported chord.
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "org",
+        callback = function()
+          for _, key in ipairs({ "<C-CR>", "<S-CR>" }) do
+            vim.keymap.set("i", key, '<cmd>lua require("orgmode").action("org_mappings.meta_return")<CR>', {
+              silent = true,
+              buffer = true,
+              desc = "Org: Meta Return (New Heading/Item)",
+            })
+          end
+        end,
       })
 
       vim.lsp.enable("org")

@@ -17,6 +17,7 @@ M.treesitter = {
   "git_rebase",
   "gitcommit",
   "gitignore",
+  "gleam",
   "glsl",
   "go",
   "gomod",

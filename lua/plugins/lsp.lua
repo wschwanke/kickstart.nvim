@@ -126,7 +126,9 @@ return {
             vim.lsp.enable(name)
           end
 
-          table.insert(ensure_installed, name)
+          if use_mason then
+            table.insert(ensure_installed, name)
+          end
         end
       end
 
