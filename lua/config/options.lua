@@ -1,3 +1,4 @@
+require("config.remote_clipboard").setup()
 -- This file is automatically loaded by plugins.core
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
