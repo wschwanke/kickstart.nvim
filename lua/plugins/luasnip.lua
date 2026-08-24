@@ -17,14 +17,6 @@ return {
     end,
   },
   {
-    "danymat/neogen",
-    optional = true,
-    dependencies = { "L3MON4D3/LuaSnip" },
-    opts = {
-      snippet_engine = "luasnip", -- This is all you need
-    },
-  },
-  {
     "saghen/blink.cmp",
     optional = true,
     opts = {
