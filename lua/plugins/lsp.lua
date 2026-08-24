@@ -33,9 +33,11 @@ return {
         },
         virtual_text = { source = "if_many", spacing = 2 },
       },
-      -- Language files under lua/languages/ extend these two tables.
+      -- Language files under lua/languages/ extend these tables. `tools` holds
+      -- non-LSP Mason package names (formatters/linters) to auto-install.
       servers = {},
       setup = {},
+      tools = {},
     },
     config = function(_, opts)
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -131,6 +133,8 @@ return {
           end
         end
       end
+
+      vim.list_extend(ensure_installed, opts.tools)
 
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
     end,
