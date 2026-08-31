@@ -27,7 +27,7 @@ local M = {}
 
 local defaults = {
   model = nil,
-  timeout_ms = 30000,
+  timeout_ms = 300000,
   max_tokens = 1024,
   temperature = 0.2,
   placeholder_text = "Generating docs...",
@@ -212,6 +212,13 @@ local function on_response(req, err, content)
     vim.fn.setreg('"', content)
     return M.notify(perr .. " (raw output copied to the unnamed register)", vim.log.levels.ERROR)
   end
+  lines = format.strip_leading_name(lines, req.name)
+  if req.spec.wrap then
+    lines = format.wrap(lines, vim.bo[req.buf].textwidth)
+  end
+  if req.spec.finalize then
+    lines = req.spec.finalize(lines, req.ctx, M.config)
+  end
 
   replace_placeholder(req, row, lines)
   release(req)
@@ -255,7 +262,7 @@ function M.generate(opts)
 
   local target, terr = ts.find_target(buf, spec, levels)
   if not target then
-    return M.notify(terr or "no function under cursor", vim.log.levels.WARN)
+    return M.notify(terr or "no documentable declaration under cursor", vim.log.levels.WARN)
   end
 
   -- Re-triggering on a function that is already in flight acts as a retry.
@@ -264,7 +271,7 @@ function M.generate(opts)
     cancel_request(running, true)
     target, terr = ts.find_target(buf, spec, levels)
     if not target then
-      return M.notify(terr or "no function under cursor", vim.log.levels.WARN)
+      return M.notify(terr or "no documentable declaration under cursor", vim.log.levels.WARN)
     end
   end
 
@@ -341,9 +348,12 @@ function M.select_model(opts)
     refresh = opts.refresh,
     ttl_s = M.config.models_cache_ttl_s,
     timeout_ms = M.config.timeout_ms,
-  }, function(err, models)
+  }, function(err, models, stale)
     if err then
       return M.notify("failed to fetch models: " .. err, vim.log.levels.ERROR)
+    end
+    if stale then
+      M.notify("fetch failed; showing the cached model list", vim.log.levels.WARN)
     end
     local current = M.get_model()
     vim.ui.select(models, {

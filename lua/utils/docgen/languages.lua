@@ -18,8 +18,18 @@ local M = {}
 ---@field placeholder fun(text: string): string[]
 ---@field extract fun(lines: string[], cfg: docgen.Config, ctx: docgen.Context): string[]?  -- only provable comment lines
 ---@field system_prompt string|fun(cfg: docgen.Config, ctx: docgen.Context): string
+---@field wrap? boolean  -- reflow inserted prose to 'textwidth'; only understands `//` leaders, so
+---                       -- only enable for leader-less (Odin `/* */`) or `//`-commented languages
+---@field finalize? fun(lines: string[], ctx: docgen.Context, cfg: docgen.Config): string[]  -- last pass over the indented, wrapped lines
 
 local text = ts.text
+
+-- Shared anti-narration rule. format.lua also repeats it (as the litmus test) in the user message
+-- right after the declaration, so keep this one short.
+local NO_NARRATION = "Write only sentences that stay true if the body were reimplemented differently; no step-by-step narration."
+
+-- Shared anti-restatement rule for @param/## Parameters/---@param lines.
+local PARAM_RULE = "In parameter descriptions, say what the value means or constrains; never merely restate the name or type."
 
 ---@param node TSNode
 ---@param name string
@@ -234,10 +244,13 @@ local javascript = {
   end,
   system_prompt = table.concat({
     "Language: JavaScript. Write a JSDoc block comment (`/** ... */`, each inner line starting with ` * `).",
-    "Start with a one-line summary, then a blank ` *` line and any details worth knowing.",
+    "Start with a one-line summary of what the function accomplishes and why a caller would use it, then",
+    "a blank ` *` line and only the details a caller needs: semantics, side effects, invariants.",
+    NO_NARRATION,
     "Add `@param {type} name - description` for every parameter (infer types from usage; use `[name]` for",
     "optional and `{...type}` for rest parameters), `@returns {type} description` unless the function returns",
     "nothing, `@throws` when the function throws, `@template` for generics, and `@async` is NOT needed.",
+    PARAM_RULE,
     "Do not repeat the function signature or the code.",
   }, " "),
 }
@@ -246,10 +259,13 @@ local typescript = vim.tbl_extend("force", javascript, {
   name = "typescript",
   system_prompt = table.concat({
     "Language: TypeScript. Write a TSDoc/JSDoc block comment (`/** ... */`, each inner line starting with ` * `).",
-    "Start with a one-line summary, then a blank ` *` line and any details worth knowing.",
+    "Start with a one-line summary of what the function accomplishes and why a caller would use it, then",
+    "a blank ` *` line and only the details a caller needs: semantics, side effects, invariants.",
+    NO_NARRATION,
     "Add `@param name - description` for every parameter and `@returns description` unless it returns void.",
     "Do NOT include `{type}` braces: the TypeScript annotations already carry the types.",
     "Use `@typeParam T - description` for generics and `@throws` when relevant.",
+    PARAM_RULE,
     "Do not repeat the function signature or the code.",
   }, " "),
 })
@@ -468,9 +484,11 @@ local elixir = {
     end
     return table.concat({
       'Language: Elixir. Write a module attribute doc block: `@doc """` on its own line, the documentation,',
-      'then `"""` on its own line. Begin with a one-sentence summary, a blank line, then details.',
+      'then `"""` on its own line. Begin with a one-sentence summary of what the function accomplishes for',
+      "its caller, a blank line, then only the details a caller needs. " .. NO_NARRATION,
       "Add `## Parameters` (as `- name - description` bullets) when the parameters need explanation and",
       "`## Examples` with `iex>` doctests when a short, obviously-correct example exists.",
+      PARAM_RULE,
       "If several clauses are shown, document the function once as a whole.",
       spec_rule,
       "Do not repeat the code.",
@@ -484,9 +502,21 @@ local elixir = {
 
 local ODIN_COMMENT = set_of({ "comment", "block_comment" })
 
+-- Declarations that get a doc block anywhere they appear...
+local ODIN_DECL = set_of({ "procedure_declaration", "struct_declaration", "enum_declaration", "union_declaration" })
+-- ...and ones that only count at file scope, so a cursor on a local `x := 1` still documents the proc.
+local ODIN_TOP_DECL = set_of({ "const_declaration", "var_declaration", "variable_declaration" })
+
 local odin = {
   name = "odin",
-  is_function = type_in({ procedure_declaration = true }),
+  is_function = function(node)
+    local t = node:type()
+    if ODIN_DECL[t] then
+      return true
+    end
+    local parent = node:parent()
+    return ODIN_TOP_DECL[t] and parent ~= nil and parent:type() == "source_file"
+  end,
   anchor = function(node)
     return node
   end,
@@ -513,15 +543,41 @@ local odin = {
     return { "/* " .. t .. " */" }
   end,
   extract = function(lines)
-    return extract_block(lines, "^%s*/%*", "%*/%s*$")
+    return extract_block(lines, "^%s*/%*", "%*/%s*$") or extract_run(lines, "^%s*//")
+  end,
+  wrap = true,
+  -- A constant/variable whose whole description fits on one line gets `// text` instead of a
+  -- three-line block. Multi-line descriptions and all other declarations keep the block.
+  finalize = function(lines, ctx)
+    if not ODIN_TOP_DECL[ctx.kind] then
+      return lines
+    end
+    local indent = lines[1]:match("^%s*")
+    local text
+    if #lines == 1 then
+      text = lines[1]:match("^%s*/%*%s*(.-)%s*%*/%s*$")
+    elseif #lines == 3 and lines[1]:match("^%s*/%*%s*$") and lines[3]:match("^%s*%*/%s*$") then
+      text = vim.trim(lines[2])
+    end
+    if not text or text == "" or text:find("\n") then
+      return lines
+    end
+    return { indent .. "// " .. text }
   end,
   system_prompt = table.concat({
     "Language: Odin. Write a block comment in the style of the Odin core library: `/*` on its own line,",
-    "a one-line summary, a blank line, then an `Inputs:` section listing each parameter as",
-    "`- name: description` and a `Returns:` section listing each return value as `- name: description`",
-    "(use `- description` when a return value is unnamed), then `*/` on its own line.",
-    "Content lines inside the block are not indented. Omit `Returns:` when the procedure returns nothing.",
-    "Do not repeat the code.",
+    "then a plain-prose description, then `*/` on its own line. The declaration may be a procedure",
+    "(describe what it does), a struct/enum/union (describe what it represents and how it is used),",
+    "or a constant/variable (describe what it holds and what it is for).",
+    "Start with a one-sentence summary; add further sentences only when needed to explain behavior,",
+    "side effects, allocation/ownership, or error conditions. " .. NO_NARRATION,
+    "Be concise, not wordy.",
+    "Write flowing prose as a single paragraph and never insert manual line breaks (lines are wrapped",
+    "automatically); only a genuinely separate point may go in a second paragraph after a blank line.",
+    "Never begin with the declaration's name: write `Releases the GPU textures held by the renderer.`,",
+    "not `destroy_textures releases ...`.",
+    "Do NOT include `Inputs:`, `Returns:`, parameter or field lists, or any other structured sections.",
+    "Content lines inside the block are not indented. Do not repeat the code.",
   }, " "),
 }
 
@@ -611,9 +667,12 @@ local lua = {
   end,
   system_prompt = table.concat({
     "Language: Lua. Write LuaCATS (EmmyLua-style) annotations. Every line starts with `---`.",
-    "First a `--- summary` line (add more `---` prose lines if useful), then `---@param name type description`",
+    "First a `--- summary` line stating what the function accomplishes for its caller, then `---@param name type description`",
     "for each parameter (use `name?` for optional ones and `...` for varargs), `---@return type description`",
     "for each return value, and `---@generic T` when needed. Infer types from usage; use `any` if unclear.",
+    PARAM_RULE,
+    "Additional `---` prose lines are only for behavior a caller must know (side effects, errors,",
+    "invariants). " .. NO_NARRATION,
     "Do not repeat the code.",
   }, " "),
 }
@@ -697,14 +756,16 @@ function M.generic(bufnr)
       return extract_run(lines, left_pat)
     end,
     system_prompt = block
-        and ("Language: %s. Write a documentation comment that starts with `%s` and ends with `%s`: a one-line summary, then the parameters and return value in prose or the language's conventional doc style. Do not repeat the code."):format(
+        and ("Language: %s. Write a documentation comment that starts with `%s` and ends with `%s`: a one-line summary of what it accomplishes for its caller, then the parameters and return value in prose or the language's conventional doc style. %s Do not repeat the code."):format(
           ft,
           left,
-          right
+          right,
+          NO_NARRATION
         )
-      or ("Language: %s. Write a documentation comment where EVERY line begins with `%s`: a one-line summary, then the parameters and return value in the language's conventional doc style. Do not repeat the code."):format(
+      or ("Language: %s. Write a documentation comment where EVERY line begins with `%s`: a one-line summary of what it accomplishes for its caller, then the parameters and return value in the language's conventional doc style. %s Do not repeat the code."):format(
         ft,
-        left
+        left,
+        NO_NARRATION
       ),
   }
 end

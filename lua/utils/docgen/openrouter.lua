@@ -107,7 +107,7 @@ local function request(opts, cb)
     return nil
   end
 
-  local timeout_ms = opts.timeout_ms or 30000
+  local timeout_ms = opts.timeout_ms or 300000
   local cmd = {
     "curl",
     "-sS",
@@ -184,6 +184,10 @@ function M.chat(opts, cb)
     if err then
       return cb(err)
     end
+    if vim.tbl_get(data, "choices", 1, "finish_reason") == "length" then
+      -- max_tokens cut the model off mid-answer; the comment block is incomplete.
+      return cb("completion truncated at max_tokens; raise docgen max_tokens and retry")
+    end
     local content = vim.tbl_get(data, "choices", 1, "message", "content")
     if type(content) ~= "string" or content:match("^%s*$") then
       return cb("empty completion from model")
@@ -223,7 +227,7 @@ local function trim_model(raw)
   }
 end
 
----@param ttl_s integer
+---@param ttl_s integer|nil  -- nil = ignore expiry (stale fallback)
 ---@return docgen.Model[]?
 function M.load_cache(ttl_s)
   local data = read_json(M.cache_file)
@@ -231,7 +235,7 @@ function M.load_cache(ttl_s)
     return nil
   end
   local age = os.time() - (tonumber(data.fetched_at) or 0)
-  if age > ttl_s then
+  if ttl_s and age > ttl_s then
     return nil
   end
   return data.models
@@ -243,7 +247,7 @@ function M.save_cache(models)
 end
 
 ---@param opts { refresh?: boolean, ttl_s?: integer, timeout_ms?: integer }
----@param cb fun(err: string?, models: docgen.Model[]?)
+---@param cb fun(err: string?, models: docgen.Model[]?, stale?: boolean)
 function M.list_models(opts, cb)
   opts = opts or {}
   if not opts.refresh then
@@ -255,6 +259,11 @@ function M.list_models(opts, cb)
 
   request({ method = "GET", path = "/models", timeout_ms = opts.timeout_ms }, function(err, data)
     if err then
+      -- Fetch failed: an expired cache still beats an empty picker.
+      local stale = M.load_cache(nil)
+      if stale then
+        return cb(nil, stale, true)
+      end
       return cb(err)
     end
     local models = {}

@@ -171,7 +171,7 @@ function M.find_target(bufnr, spec, levels)
   end
 
   if #matches == 0 then
-    return nil, "no function under cursor"
+    return nil, "no documentable declaration under cursor"
   end
 
   local fn_node = matches[math.min((levels or 0) + 1, #matches)]
@@ -196,6 +196,7 @@ end
 ---@field imports string[]
 ---@field filename string
 ---@field filetype string
+---@field kind string        -- treesitter node type of the documented declaration
 
 ---@param bufnr integer
 ---@param target docgen.Target
@@ -247,6 +248,7 @@ function M.collect_context(bufnr, target, spec, cfg)
     imports = imports,
     filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":."),
     filetype = vim.bo[bufnr].filetype,
+    kind = target.fn_node:type(),
   }
 end
 
